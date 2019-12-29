@@ -1,16 +1,57 @@
 import React, { Component } from 'react'
+import Header from '../component/Header'
+import Banner from '../component/Banner'
+import ArticleList from '../component/ArticleList'
+import TagList from '../component/TagList'
+
+const dummyState = {
+  articles: [
+    {
+      slug: "how-to-train-your-dragon",
+      title: "How to train your dragon",
+      description: "Ever wonder how?",
+      body: "It takes a Jacobian",
+      tagList: ["dragons", "training"],
+      createdAt: "2016-02-18T03:22:56.637Z",
+      updatedAt: "2016-02-18T03:48:35.824Z",
+      favorited: false,
+      favoritesCount: 0,
+      author: {
+        username: "jake",
+        bio: "I work at statefarm",
+        image: "https://i.stack.imgur.com/xHWG8.jpg",
+        following: false
+      }
+    },
+    {
+      slug: "how-to-train-your-dragon",
+      title: "How to train your dragon",
+      description: "Ever wonder how?",
+      body: "It takes a Jacobian",
+      tagList: ["dragons", "training"],
+      createdAt: "2016-02-18T03:22:56.637Z",
+      updatedAt: "2016-02-18T03:48:35.824Z",
+      favorited: false,
+      favoritesCount: 0,
+      author: {
+        username: "jake",
+        bio: "I work at statefarm",
+        image: "https://i.stack.imgur.com/xHWG8.jpg",
+        following: false
+      }
+    }
+  ],
+  tags: ["butt", "test", "dragons", "training", "tags", "as", "coffee", "animation", "baby",]
+}
 
 class HomePage extends Component {
   render() {
     return (
       <div className="home-page">
 
-        <div className="banner">
-          <div className="container">
-            <h1 className="logo-font">conduit</h1>
-            <p>A place to share your knowledge.</p>
-          </div>
-        </div>
+        <Banner title="conduit">
+          <p>A place to share your knowledge.</p>
+        </Banner>
 
         <div className="container page">
           <div className="row">
@@ -26,59 +67,13 @@ class HomePage extends Component {
                   </li>
                 </ul>
               </div>
-
-              <div className="article-preview">
-                <div className="article-meta">
-                  <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" alt="img" /></a>
-                  <div className="info">
-                    <a href="/" className="author">Eric Simons</a>
-                    <span className="date">January 20th</span>
-                  </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                    <i className="ion-heart"></i> 29
-            </button>
-                </div>
-                <a href="/" className="preview-link">
-                  <h1>How to build webapps that scale</h1>
-                  <p>This is the description for the post.</p>
-                  <span>Read more...</span>
-                </a>
-              </div>
-
-              <div className="article-preview">
-                <div className="article-meta">
-                  <a href="profile.html"><img src="http://i.imgur.com/N4VcUeJ.jpg" alt="img" /></a>
-                  <div className="info">
-                    <a href="/" className="author">Albert Pai</a>
-                    <span className="date">January 20th</span>
-                  </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                    <i className="ion-heart"></i> 32
-            </button>
-                </div>
-                <a href="/" className="preview-link">
-                  <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-                  <p>This is the description for the post.</p>
-                  <span>Read more...</span>
-                </a>
-              </div>
-
+              <ArticleList articles={dummyState.articles} />
             </div>
 
             <div className="col-md-3">
               <div className="sidebar">
                 <p>Popular Tags</p>
-
-                <div className="tag-list">
-                  <a href="/" className="tag-pill tag-default">programming</a>
-                  <a href="/" className="tag-pill tag-default">javascript</a>
-                  <a href="/" className="tag-pill tag-default">emberjs</a>
-                  <a href="/" className="tag-pill tag-default">angularjs</a>
-                  <a href="/" className="tag-pill tag-default">react</a>
-                  <a href="/" className="tag-pill tag-default">mean</a>
-                  <a href="/" className="tag-pill tag-default">node</a>
-                  <a href="/" className="tag-pill tag-default">rails</a>
-                </div>
+                <TagList tags={dummyState.tags} />
               </div>
             </div>
 
