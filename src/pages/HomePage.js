@@ -7,6 +7,8 @@ import TagList from '../component/TagList'
 import { FETCH_ARTICLES_PENDING } from '../store/constant'
 
 const mapStateToProps = state => ({
+  isAritclesLoading: state.articles.loading,
+  fetchArticlesError: state.articles.error,
   articles: state.articles.articles,
   tags: state.tags
 })
@@ -42,7 +44,13 @@ class HomePage extends Component {
                   </li>
                 </ul>
               </div>
-              <ArticleList articles={this.props.articles} />
+              {
+                (() => {
+                  if (this.props.isAritclesLoading) return (<h1>Loading...</h1>)
+                  if (this.props.fetchArticlesError) return (<h1>Somthing wrong</h1>)
+                  return (<ArticleList articles={this.props.articles} />)
+                })()
+              }
             </div>
 
             <div className="col-md-3">

@@ -1,14 +1,25 @@
-import { put, takeLatest, all } from 'redux-saga/effects'
+import axios from 'axios'
+import { put, takeLatest, all, call } from 'redux-saga/effects'
 import * as types from '../store/constant'
 
-function* fetchArticles() {
-  const data = yield fetch('https://conduit.productionready.io/api/articles').then(response => response.json())
+function fetchArticles() {
+  return axios.get('https://conduit.productionready.io/api/articles')
+}
 
-  yield put({ type: types.FETCH_ARTICLES_SUCCESS, data })
+function* workerArticles() {
+  try {
+    const response = yield call(fetchArticles)
+    const data = response.data
+
+    yield put({ type: types.FETCH_ARTICLES_SUCCESS, data })
+  }
+  catch (error) {
+    yield put({ type: types.FETCH_ARTICLES_FAIL, error })
+  }
 }
 
 function* actionWatcher() {
-  yield takeLatest(types.FETCH_ARTICLES_PENDING, fetchArticles)
+  yield takeLatest(types.FETCH_ARTICLES_PENDING, workerArticles)
 }
 
 export default function* rootSaga() {
