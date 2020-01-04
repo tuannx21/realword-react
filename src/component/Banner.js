@@ -2,7 +2,6 @@ import React from 'react'
 
 function Banner(props) {
   const { title, children } = props
-  console.log(children)
 
   return (
     <div className="banner">

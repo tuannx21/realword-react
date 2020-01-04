@@ -6,7 +6,7 @@ function ArticleList(props) {
     <div>
       {
         props.articles.map(article => (
-          <ArticlePreview article={article} />
+          <ArticlePreview key={article.slug} article={article} />
         ))
       }
     </div>

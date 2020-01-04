@@ -5,7 +5,7 @@ function TagList(props) {
     <div className="tag-list">
       {
         props.tags.map(tag => (
-          <a href="/" className="tag-pill tag-default">{tag}</a>
+          <a key={tag} href="/" className="tag-pill tag-default">{tag}</a>
         ))
       }
     </div>

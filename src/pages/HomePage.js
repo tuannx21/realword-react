@@ -4,36 +4,20 @@ import Header from '../component/Header'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
-import { FETCH_ARTICLES } from '../store/constant'
+import { FETCH_ARTICLES_PENDING } from '../store/constant'
 
 const mapStateToProps = state => ({
-  articles: state.articles,
+  articles: state.articles.articles,
   tags: state.tags
 })
 
 const mapDispatchToProps = dispatch => ({
-  addArticle: article => dispatch({ type: FETCH_ARTICLES, article })
+  fetchArticles: () => dispatch({ type: FETCH_ARTICLES_PENDING })
 })
 
 class HomePage extends Component {
   componentDidMount() {
-    this.props.addArticle({
-      slug: "how-to-train-your-dragon",
-      title: "How to train",
-      description: "Ever wonder how?",
-      body: "It takes a Jacobian",
-      tagList: ["dragons", "training"],
-      createdAt: "2016-02-18T03:22:56.637Z",
-      updatedAt: "2016-02-18T03:48:35.824Z",
-      favorited: false,
-      favoritesCount: 0,
-      author: {
-        username: "jake",
-        bio: "I work at statefarm",
-        image: "https://i.stack.imgur.com/xHWG8.jpg",
-        following: false
-      }
-    })
+    this.props.fetchArticles()
   }
 
   render() {
