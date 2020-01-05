@@ -5,7 +5,7 @@ function Commentlist(props) {
   const { comments } = props
 
   return (
-    <div class="comment-list">
+    <div className="comment-list">
       {/* {
         comments.map(comment => (
           <CommentItem />

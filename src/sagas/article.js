@@ -1,11 +1,11 @@
 import { Article } from './api'
-import { put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest, takeEvery } from 'redux-saga/effects'
 import * as types from '../store/constant'
 
 
 function* fetchArticles() {
   try {
-    const data = yield Article.getAll()
+    const data = yield Article.findAll()
 
     yield put({ type: types.FETCH_ARTICLES_SUCCESS, data })
   } catch (error) {
@@ -13,7 +13,18 @@ function* fetchArticles() {
   }
 }
 
+function* fetchArticle(action) {
+  try {
+    const data = yield Article.findBySlug(action.slug)
+
+    yield put({ type: types.FETCH_ARTICLE_SUCCESS, data })
+  } catch (error) {
+    yield put({ type: types.FETCH_TAGS_FAIL, error })
+  }
+}
+
 
 export default function* articleWatcher() {
   yield takeLatest(types.FETCH_ARTICLES_PENDING, fetchArticles)
+  yield takeEvery(types.FETCH_ARTICLE_PENDING, fetchArticle)
 }

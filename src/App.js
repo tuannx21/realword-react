@@ -28,8 +28,7 @@ function App() {
           <Route path="/setting">
             <SettingPage />
           </Route>
-          <Route path="/@:articleId">
-            <ArticlePage />
+          <Route path="/article/:articleSlug" component={ArticlePage}>
           </Route>
         </Switch>
         <Footer />

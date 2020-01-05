@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function ArticlePreview(props) {
   const { slug, title, description, body, tagList, favorited, createdAt, favoritesCount, author } = props.article
@@ -13,11 +14,11 @@ function ArticlePreview(props) {
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right"><i className="ion-heart"></i> {favoritesCount}</button>
       </div>
-      <a href="/" className="preview-link">
+      <Link to={`/article/${slug}`} className="preview-link">
         <h1>{title}</h1>
         <p>{description}</p>
         <span>Read more...</span>
-      </a>
+      </Link>
     </div>
   )
 }
