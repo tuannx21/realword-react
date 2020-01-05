@@ -1,19 +1,19 @@
 import * as types from '../constant'
 
 const initialState = {
-  loading: false,
+  isLoading: false,
+  error: null,
   articles: [],
-  error: null
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_ARTICLES_PENDING:
-      return { ...state, loading: true }
+      return { ...state, isLoading: true }
     case types.FETCH_ARTICLES_SUCCESS:
-      return { ...state, articles: action.data.articles, loading: false }
+      return { ...state, articles: action.data.articles, isLoading: false }
     case types.FETCH_ARTICLES_FAIL:
-      return { ...state, loading: false, error: action.error }
+      return { ...state, isLoading: false, error: action.error }
     default:
       return state
   }

@@ -4,22 +4,24 @@ import Header from '../component/Header'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
-import { FETCH_ARTICLES_PENDING } from '../store/constant'
+import * as types from '../store/constant'
 
 const mapStateToProps = state => ({
-  isAritclesLoading: state.articles.loading,
+  isAritclesLoading: state.articles.isLoading,
   fetchArticlesError: state.articles.error,
   articles: state.articles.articles,
-  tags: state.tags
+  tags: state.tags.tags
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticles: () => dispatch({ type: FETCH_ARTICLES_PENDING })
+  fetchArticles: () => dispatch({ type: types.FETCH_ARTICLES_PENDING }),
+  fetchTags: () => dispatch({ type: types.FETCH_TAGS_PENDING })
 })
 
 class HomePage extends Component {
   componentDidMount() {
     this.props.fetchArticles()
+    this.props.fetchTags()
   }
 
   render() {
@@ -44,13 +46,7 @@ class HomePage extends Component {
                   </li>
                 </ul>
               </div>
-              {
-                (() => {
-                  if (this.props.isAritclesLoading) return (<h1>Loading...</h1>)
-                  if (this.props.fetchArticlesError) return (<h1>Somthing wrong</h1>)
-                  return (<ArticleList articles={this.props.articles} />)
-                })()
-              }
+              <ArticleList isError={this.props.fetchArticlesError} isLoading={this.props.isAritclesLoading} articles={this.props.articles} />
             </div>
 
             <div className="col-md-3">
