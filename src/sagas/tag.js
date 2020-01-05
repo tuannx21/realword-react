@@ -13,5 +13,5 @@ function* fetchTags() {
 }
 
 export default function* tagWatcher() {
-  yield takeLatest(types.FETCH_TAGS_PENDING, fetchTags)
+  yield takeLatest(types.FETCH_TAGS_START, fetchTags)
 }

@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticle: slug => dispatch({ type: types.FETCH_ARTICLE_PENDING, slug })
+  fetchArticle: slug => dispatch({ type: types.FETCH_ARTICLE_START, slug })
 })
 
 class ArticlePage extends Component {

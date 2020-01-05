@@ -8,7 +8,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.FETCH_ARTICLES_PENDING:
+    case types.FETCH_ARTICLES_START:
       return { ...state, isLoading: true }
     case types.FETCH_ARTICLES_SUCCESS:
       return { ...state, articles: action.data.articles, isLoading: false }

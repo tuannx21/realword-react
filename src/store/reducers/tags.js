@@ -8,7 +8,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.FETCH_TAGS_PENDING:
+    case types.FETCH_TAGS_START:
       return { ...state, isLoading: true }
     case types.FETCH_TAGS_SUCCESS:
       return { ...state, isLoading: false, tags: action.data.tags }

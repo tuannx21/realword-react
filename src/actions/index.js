@@ -1,3 +1,3 @@
-import { FETCH_ARTICLES_PENDING } from '../store/constant'
+import { FETCH_ARTICLES_START } from '../store/constant'
 
-export const fetchArticles = () => ({ type: FETCH_ARTICLES_PENDING })
+export const fetchArticles = () => ({ type: FETCH_ARTICLES_START })

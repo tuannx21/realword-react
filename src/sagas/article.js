@@ -25,6 +25,6 @@ function* fetchArticle(action) {
 
 
 export default function* articleWatcher() {
-  yield takeLatest(types.FETCH_ARTICLES_PENDING, fetchArticles)
-  yield takeEvery(types.FETCH_ARTICLE_PENDING, fetchArticle)
+  yield takeLatest(types.FETCH_ARTICLES_START, fetchArticles)
+  yield takeEvery(types.FETCH_ARTICLE_START, fetchArticle)
 }

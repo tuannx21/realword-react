@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const API_ROOT = 'https://conduit.productionready.io/api'
 
+axios.defaults.baseURL = API_ROOT
+axios.defaults.headers.common['Authorization'] = ''
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
 const getResponseData = response => response.data
 
 const Article = {

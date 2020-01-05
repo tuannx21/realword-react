@@ -13,8 +13,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticles: () => dispatch({ type: types.FETCH_ARTICLES_PENDING }),
-  fetchTags: () => dispatch({ type: types.FETCH_TAGS_PENDING })
+  fetchArticles: () => dispatch({ type: types.FETCH_ARTICLES_START }),
+  fetchTags: () => dispatch({ type: types.FETCH_TAGS_START })
 })
 
 class HomePage extends Component {
