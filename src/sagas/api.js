@@ -3,13 +3,16 @@ import axios from 'axios'
 const API_ROOT = 'https://conduit.productionready.io/api'
 
 axios.defaults.baseURL = API_ROOT
-axios.defaults.headers.common['Authorization'] = ''
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 const getResponseData = response => response.data
 
+const setToken = token => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
 const Article = {
-  findAll: () => axios.get(`${API_ROOT}/articles`).then(getResponseData),
+  findAll: (params = {}) => axios.get(`/articles`, { params }).then(getResponseData),
   findAllFeed: (params = {}) => axios.get(`/articles/feed`, { params }).then(getResponseData),
   findBySlug: slug => axios.get(`/articles/${slug}`).then(getResponseData),
   create: article => axios.post(`/articles`, article).then(getResponseData),
@@ -20,7 +23,7 @@ const Article = {
 }
 
 const Tag = {
-  getAll: () => axios.get(`/tags`).then(getResponseData)
+  findAll: () => axios.get(`/tags`).then(getResponseData)
 }
 
 const Auth = {
@@ -47,5 +50,6 @@ export {
   Tag,
   Auth,
   User,
-  Comment
+  Comment,
+  setToken
 }

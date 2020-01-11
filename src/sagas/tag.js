@@ -4,7 +4,7 @@ import { Tag } from './api'
 
 function* fetchTags() {
   try {
-    const data = yield Tag.getAll()
+    const data = yield Tag.findAll()
 
     yield put({ type: types.FETCH_TAGS_SUCCESS, data })
   } catch (error) {
