@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router'
+import { ConnectedRouter } from 'connected-react-router'
+import { history } from './store'
 
 import Header from './component/Header'
 import Footer from './component/Footer'
@@ -13,7 +15,7 @@ import LoginPage from './pages/LoginPage'
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <ConnectedRouter history={history}>
         <Header />
         <Switch>
           <Route exact path="/">
@@ -32,7 +34,7 @@ function App() {
           </Route>
         </Switch>
         <Footer />
-      </BrowserRouter>
+      </ConnectedRouter>
     </div>
   );
 }

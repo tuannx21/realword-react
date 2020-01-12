@@ -1,4 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { LOGIN_START } from '../store/constant'
+
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+  errors: state.auth.errors
+})
+
+const mapDispatchToProps = dispatch => ({
+  login: user => dispatch({ type: LOGIN_START, user })
+})
 
 class LoginPage extends Component {
   constructor(props) {
@@ -14,7 +25,7 @@ class LoginPage extends Component {
   onInputChange = event => {
     const targetValue = event.target.value
     const targetName = event.target.name
-    console.log(this.state.user)
+
     this.setState({
       user: {
         ...this.state.user,
@@ -23,9 +34,14 @@ class LoginPage extends Component {
     })
   }
 
+  onHandleSubmit = event => {
+    event.preventDefault()
+    this.props.login(this.state.user)
+  }
+
   render() {
     const { user } = this.state
-    console.log(this.state.user)
+    
     return (
       <div className="auth-page">
         <div className="container page">
@@ -58,7 +74,7 @@ class LoginPage extends Component {
                     placeholder="Password"
                     onChange={this.onInputChange} />
                 </fieldset>
-                <button className="btn btn-lg btn-primary pull-xs-right">Log In</button>
+                <button className="btn btn-lg btn-primary pull-xs-right" type="submit" onClick={this.onHandleSubmit}>Log In</button>
               </form>
             </div>
 
@@ -69,4 +85,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

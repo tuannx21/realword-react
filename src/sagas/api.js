@@ -27,13 +27,13 @@ const Tag = {
 }
 
 const Auth = {
-  login: user => axios.post(`/users/login`, user).then(getResponseData),
-  register: user => axios.post(`/users`, user).then(getResponseData)
+  login: user => axios.post(`/users/login`, { user }).then(getResponseData),
+  register: user => axios.post(`/users`, { user }).then(getResponseData)
 }
 
 const User = {
   getCurrent: () => axios.get(`/user`).then(getResponseData),
-  update: user => axios.put(`/user`, user).then(getResponseData),
+  update: user => axios.put(`/user`, { user }).then(getResponseData),
   getProfile: username => axios.get(`/user/${username}`).then(getResponseData),
   follow: username => axios.post(`/user/${username}/follow`).then(getResponseData),
   unfollow: username => axios.delete(`/user/${username}/follow`).then(getResponseData)
