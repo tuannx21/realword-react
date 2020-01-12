@@ -7,9 +7,9 @@ function ArticlePreview(props) {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <a href="profile.html"><img src={author.image} alt="img" /></a>
+        <Link to={`/user/@${author.username}`}><img src={author.image} alt="img" /></Link>
         <div className="info">
-          <a href="/" className="author">{author.username}</a>
+          <Link to={`/user/@${author.username}`} className="author">{author.username}</Link>
           <span className="date">{createdAt}</span>
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right"><i className="ion-heart"></i> {favoritesCount}</button>

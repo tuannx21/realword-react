@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class RegisterPage extends Component {
   render() {
@@ -10,7 +11,7 @@ class RegisterPage extends Component {
             <div className="col-md-6 offset-md-3 col-xs-12">
               <h1 className="text-xs-center">Sign up</h1>
               <p className="text-xs-center">
-                <a href="/">Have an account?</a>
+                <Link to="/login">Have an account?</Link>
               </p>
 
               <ul className="error-messages">

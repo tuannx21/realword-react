@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router'
+import { Switch, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { history } from './store'
 
@@ -11,6 +11,8 @@ import HomePage from './pages/HomePage'
 import EditArticlePage from './pages/EditArticlePage'
 import SettingPage from './pages/SettingPage'
 import LoginPage from './pages/LoginPage'
+import ProfilePage from './pages/ProfilePage'
+import RegisterPage from './pages/RegisterPage'
 
 function App() {
   return (
@@ -30,8 +32,9 @@ function App() {
           <Route path="/setting">
             <SettingPage />
           </Route>
-          <Route path="/article/:articleSlug" component={ArticlePage}>
-          </Route>
+          <Route path="/signup" component={RegisterPage}/>
+          <Route path="/article/:articleSlug" component={ArticlePage}/>
+          <Route path="/user/@:username" component={ProfilePage}/>
         </Switch>
         <Footer />
       </ConnectedRouter>

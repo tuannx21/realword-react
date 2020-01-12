@@ -8,7 +8,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 const getResponseData = response => response.data
 
 const setToken = token => {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  axios.defaults.headers.common['Authorization'] = token ? `Token ${token}` : ''
 }
 
 const Article = {

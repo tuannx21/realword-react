@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { LOGIN_START } from '../store/constant'
 
 const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser,
   errors: state.auth.errors
 })
 
@@ -17,7 +17,7 @@ class LoginPage extends Component {
     this.state = {
       user: {
         email: '',
-        password: '',
+        password: ''
       }
     }
   }
@@ -36,12 +36,25 @@ class LoginPage extends Component {
 
   onHandleSubmit = event => {
     event.preventDefault()
+    this.setState({
+      user: {
+        email: '',
+        password: ''
+      }
+    })
     this.props.login(this.state.user)
+  }
+
+  displayErrors = errors => {
+    return Object.keys(errors).map(errorKey => {
+      return errors[errorKey].map(line => (<li key={errorKey}>{`${errorKey} ${line}`}</li>))
+    })
   }
 
   render() {
     const { user } = this.state
-    
+    const { errors } = this.props
+
     return (
       <div className="auth-page">
         <div className="container page">
@@ -49,12 +62,12 @@ class LoginPage extends Component {
 
             <div className="col-md-6 offset-md-3 col-xs-12">
               <h1 className="text-xs-center">Login</h1>
-              {/* <p className="text-xs-center">
-                <a href="/">Have an account?</a>
-              </p> */}
+              <p className="text-xs-center">
+                <Link to="/signup">Haven't got an account?</Link>
+              </p>
 
               <ul className="error-messages">
-                <li>That email is already taken</li>
+                {this.displayErrors(errors)}
               </ul>
 
               <form>
