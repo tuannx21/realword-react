@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LOGIN_START } from '../store/constant'
+import { displayErrors } from '../helpers/utils'
 
 const mapStateToProps = state => ({
   errors: state.auth.errors
@@ -45,12 +46,6 @@ class LoginPage extends Component {
     this.props.login(this.state.user)
   }
 
-  displayErrors = errors => {
-    return Object.keys(errors).map(errorKey => {
-      return errors[errorKey].map(line => (<li key={errorKey}>{`${errorKey} ${line}`}</li>))
-    })
-  }
-
   render() {
     const { user } = this.state
     const { errors } = this.props
@@ -67,7 +62,7 @@ class LoginPage extends Component {
               </p>
 
               <ul className="error-messages">
-                {this.displayErrors(errors)}
+                {displayErrors(errors)}
               </ul>
 
               <form>

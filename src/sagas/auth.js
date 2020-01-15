@@ -17,6 +17,20 @@ function* login(action) {
   }
 }
 
+function* register(action) {
+  try {
+    const data = yield Auth.register(action.user)
+
+    yield put({ type: types.REGISTER_SUCCESS, data })
+    yield setToken(data.user.token)
+    yield localStorage.setItem('token', data.user.token)
+    yield put(push('/'))
+  } catch (error) {
+    yield put({ type: types.REGISTER_FAIL, error: error.response.data.errors })
+    yield put(push('/signup'))
+  }
+}
+
 function* logout() {
   yield localStorage.removeItem('token')
   yield setToken('')
@@ -40,4 +54,5 @@ export default function* authWatcher() {
   yield takeLatest(types.LOGIN_START, login)
   yield takeLatest(types.LOGOUT_START, logout)
   yield takeLatest(types.FETCH_CURRENT_USER, fetchCurrentUser)
+  yield takeLatest(types.REGISTER_START, register)
 }
