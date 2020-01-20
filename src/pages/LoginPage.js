@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { LOGIN_START } from '../store/constant'
+import { LOGIN_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
 import { displayErrors } from '../helpers/utils'
 
 const mapStateToProps = state => ({
-  errors: state.auth.errors
+  errors: state.auth.errorsLogin
 })
 
 const mapDispatchToProps = dispatch => ({
-  login: user => dispatch({ type: LOGIN_START, user })
+  login: user => dispatch({ type: LOGIN_START, user }),
+  clearErrors: () => dispatch({type: CLEAR_ALL_AUTH_ERRORS})
 })
 
 class LoginPage extends Component {
@@ -21,6 +22,10 @@ class LoginPage extends Component {
         password: ''
       }
     }
+  }
+
+  componentDidMount() {
+    this.props.clearErrors()
   }
 
   onInputChange = event => {

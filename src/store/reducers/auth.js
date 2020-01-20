@@ -1,10 +1,9 @@
 import * as types from '../constant'
-import { bindActionCreators } from 'redux'
 
 const initialState = {
   errorsLogin: {},
   errorsRegister: {},
-  errors: {},
+  errorsUpdateProfile: {},
   currentUser: {},
 }
 
@@ -12,16 +11,18 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.LOGIN_SUCCESS:
     case types.REGISTER_SUCCESS:
+    case types.UPDATE_PROFILE_SUCCESS:
       return { ...state, currentUser: action.data.user }
     case types.LOGIN_FAIL:
-      return { ...state, errors: action.error }
+      return { ...state, errorsLogin: action.error }
     case types.REGISTER_FAIL:
-      return { ...state, errors: action.error }
+      return { ...state, errorsRegister: action.error }
+    case types.UPDATE_PROFILE_FAIL:
+      return { ...state, errorsUpdateProfile: action.error }
     case types.LOGOUT_SUCCESS:
       return { ...state, currentUser: {} }
-    case types.LOGIN_START:
-    case types.LOGOUT_START:
-    case types.REGISTER_START:
+    case types.CLEAR_ALL_AUTH_ERRORS:
+      return { ...state, errorsLogin: {}, errorsRegister: {} }
     default:
       return state
   }
