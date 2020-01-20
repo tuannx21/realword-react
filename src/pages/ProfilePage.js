@@ -1,13 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { GET_PROFILE_START } from '../store/constant'
 
 const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser
+  currentProfile: state.user.profile
+})
+
+const mapDispatchToProps = dispatch => ({
+  getProfile: username => dispatch({ type: GET_PROFILE_START, username })
 })
 
 class ProfilePage extends Component {
+  componentDidMount() {
+    this.props.getProfile(this.props.match.params.username)
+  }
+
   render() {
-    const { currentUser } = this.props
+    const { currentProfile } = this.props
 
     return (
       <div className="profile-page">
@@ -15,9 +24,9 @@ class ProfilePage extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img src="http://i.imgur.com/Qr71crq.jpg" className="user-img" alt="avatar" />
-                <h4>Eric Simons</h4>
-                <p>Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games</p>
+                <img src={currentProfile.image} className="user-img" alt="avatar" />
+                <h4>{currentProfile.username}</h4>
+                <p>{currentProfile.bio}</p>
                 <button className="btn btn-sm btn-outline-secondary action-btn"><i className="ion-plus-round"></i>&nbsp;Follow Eric Simons</button>
               </div>
             </div>
@@ -83,4 +92,4 @@ class ProfilePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, () => { })(ProfilePage) 
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage) 

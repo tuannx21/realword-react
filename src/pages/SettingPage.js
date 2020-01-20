@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { UPDATE_PROFILE_START } from '../store/constant'
+import { displayErrors } from '../helpers/utils'
 
 const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser
+  currentUser: state.auth.currentUser,
+  errors: state.auth.errorsUpdateProfile
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: user => dispatch({type: UPDATE_PROFILE_START, user})
+  updateProfile: user => dispatch({ type: UPDATE_PROFILE_START, user })
 })
 
 class SettingPage extends Component {
@@ -22,6 +24,10 @@ class SettingPage extends Component {
         bio: ''
       }
     }
+  }
+
+  componentDidMount() {
+    if (this.props.currentUser) this.setState({ user: { ...this.props.currentUser } })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,6 +55,7 @@ class SettingPage extends Component {
 
   render() {
     const { user } = this.state
+    const { errors } = this.props
 
     return (
       <div className="settings-page">
@@ -56,6 +63,11 @@ class SettingPage extends Component {
           <div className="row">
             <div className="col-md-6 offset-md-3 col-xs-12">
               <h1 className="text-xs-center">Your Settings</h1>
+
+              <ul className="error-messages">
+                {displayErrors(errors)}
+              </ul>
+
               <form>
                 <fieldset>
                   <fieldset className="form-group">

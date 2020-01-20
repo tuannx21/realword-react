@@ -34,9 +34,9 @@ const Auth = {
 const User = {
   getCurrent: () => axios.get(`/user`).then(getResponseData),
   update: user => axios.put(`/user`, { user }).then(getResponseData),
-  getProfile: username => axios.get(`/user/${username}`).then(getResponseData),
-  follow: username => axios.post(`/user/${username}/follow`).then(getResponseData),
-  unfollow: username => axios.delete(`/user/${username}/follow`).then(getResponseData)
+  getProfile: username => axios.get(`/profiles/${encodeURIComponent(username)}`).then(getResponseData),
+  follow: username => axios.post(`/profiles/${encodeURIComponent(username)}/follow`).then(getResponseData),
+  unfollow: username => axios.delete(`/profiles/${encodeURIComponent(username)}/follow`).then(getResponseData)
 }
 
 const Comment = {
