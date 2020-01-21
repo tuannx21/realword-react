@@ -1,33 +1,93 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { LOGIN_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
+import { displayErrors } from '../helpers/utils'
+
+const mapStateToProps = state => ({
+  errors: state.auth.errorsLogin
+})
+
+const mapDispatchToProps = dispatch => ({
+  login: user => dispatch({ type: LOGIN_START, user }),
+  clearErrors: () => dispatch({type: CLEAR_ALL_AUTH_ERRORS})
+})
 
 class LoginPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: {
+        email: '',
+        password: ''
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.props.clearErrors()
+  }
+
+  onInputChange = event => {
+    const targetValue = event.target.value
+    const targetName = event.target.name
+
+    this.setState({
+      user: {
+        ...this.state.user,
+        [targetName]: targetValue
+      }
+    })
+  }
+
+  onHandleSubmit = event => {
+    event.preventDefault()
+    this.setState({
+      user: {
+        email: '',
+        password: ''
+      }
+    })
+    this.props.login(this.state.user)
+  }
+
   render() {
+    const { user } = this.state
+    const { errors } = this.props
+
     return (
       <div className="auth-page">
         <div className="container page">
           <div className="row">
 
             <div className="col-md-6 offset-md-3 col-xs-12">
-              <h1 className="text-xs-center">Sign up</h1>
+              <h1 className="text-xs-center">Login</h1>
               <p className="text-xs-center">
-                <a href="/">Have an account?</a>
+                <Link to="/signup">Haven't got an account?</Link>
               </p>
 
               <ul className="error-messages">
-                <li>That email is already taken</li>
+                {displayErrors(errors)}
               </ul>
 
               <form>
                 <fieldset className="form-group">
-                  <input className="form-control form-control-lg" type="text" placeholder="Your Name" />
+                  <input className="form-control form-control-lg"
+                    type="text"
+                    name="email"
+                    value={user.email}
+                    placeholder="Email"
+                    onChange={this.onInputChange} />
                 </fieldset>
                 <fieldset className="form-group">
-                  <input className="form-control form-control-lg" type="text" placeholder="Email" />
+                  <input className="form-control form-control-lg"
+                    type="password"
+                    name="password"
+                    value={user.password}
+                    placeholder="Password"
+                    onChange={this.onInputChange} />
                 </fieldset>
-                <fieldset className="form-group">
-                  <input className="form-control form-control-lg" type="password" placeholder="Password" />
-                </fieldset>
-                <button className="btn btn-lg btn-primary pull-xs-right">Sign up</button>
+                <button className="btn btn-lg btn-primary pull-xs-right" type="submit" onClick={this.onHandleSubmit}>Log In</button>
               </form>
             </div>
 
@@ -38,4 +98,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

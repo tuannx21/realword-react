@@ -1,16 +1,32 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { GET_PROFILE_START } from '../store/constant'
+
+const mapStateToProps = state => ({
+  currentProfile: state.user.profile
+})
+
+const mapDispatchToProps = dispatch => ({
+  getProfile: username => dispatch({ type: GET_PROFILE_START, username })
+})
 
 class ProfilePage extends Component {
+  componentDidMount() {
+    this.props.getProfile(this.props.match.params.username)
+  }
+
   render() {
+    const { currentProfile } = this.props
+
     return (
       <div className="profile-page">
         <div className="user-info">
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
-                <h4>Eric Simons</h4>
-                <p>Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games</p>
+                <img src={currentProfile.image} className="user-img" alt="avatar" />
+                <h4>{currentProfile.username}</h4>
+                <p>{currentProfile.bio}</p>
                 <button className="btn btn-sm btn-outline-secondary action-btn"><i className="ion-plus-round"></i>&nbsp;Follow Eric Simons</button>
               </div>
             </div>
@@ -34,7 +50,7 @@ class ProfilePage extends Component {
 
               <div className="article-preview">
                 <div className="article-meta">
-                  <a href="/"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                  <a href="/"><img src="http://i.imgur.com/Qr71crq.jpg" alt="article" /></a>
                   <div className="info">
                     <a href="/" className="author">Eric Simons</a>
                     <span className="date">January 20th</span>
@@ -50,7 +66,7 @@ class ProfilePage extends Component {
 
               <div className="article-preview">
                 <div className="article-meta">
-                  <a href="/"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
+                  <a href="/"><img src="http://i.imgur.com/N4VcUeJ.jpg" alt="article" /></a>
                   <div className="info">
                     <a href="/" className="author">Albert Pai</a>
                     <span className="date">January 20th</span>
@@ -76,4 +92,4 @@ class ProfilePage extends Component {
   }
 }
 
-export default ProfilePage
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage) 

@@ -1,0 +1,21 @@
+import React from 'react'
+
+function ArticleMeta() {
+  return (
+    <div className="article-meta">
+      <a href="/"><img src="http://i.imgur.com/Qr71crq.jpg" alt="img" /></a>
+      <div className="info">
+        <a href="/" className="author">Eric Simons</a>
+        <span className="date">January 20th</span>
+      </div>
+      <button className="btn btn-sm btn-outline-secondary">
+        <i className="ion-plus-round"></i> Follow Eric Simons <span className="counter">(10)</span>
+      </button>
+      <button className="btn btn-sm btn-outline-primary">
+        <i className="ion-heart"></i> Favorite Post <span className="counter">(29)</span>
+      </button>
+    </div>
+  )
+}
+
+export default ArticleMeta
