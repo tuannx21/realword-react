@@ -7,7 +7,8 @@ import CommentList from '../component/CommentList'
 import * as types from '../store/constant'
 
 const mapStateToProps = state => ({
-  article: state.article.article
+  article: state.article.article,
+  isArticleLoading: state.article.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -20,7 +21,11 @@ class ArticlePage extends Component {
   }
 
   render() {
-    const { article } = this.props
+    const { article, isArticleLoading } = this.props
+    
+    if (!article) {
+      return null
+    }
     
     return (
       <div className="article-page">
@@ -38,7 +43,7 @@ class ArticlePage extends Component {
           </div>
           <hr />
           <div className="article-actions">
-            <ArticleMeta />
+            <ArticleMeta article={article}/>
           </div>
 
           <div className="row">

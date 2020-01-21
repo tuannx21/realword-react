@@ -2,7 +2,7 @@ import * as types from '../constant'
 
 const initialState = {
   isLoading: false,
-  article: {},
+  article: null,
   error: null
 }
 
