@@ -12,7 +12,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticle: slug => dispatch({ type: types.FETCH_ARTICLE_START, slug })
+  fetchArticle: slug => dispatch({ type: types.FETCH_ARTICLE_START, slug }),
+  followProfile: username => dispatch({ type: types.FOLLOW_PROFILE_START, username }),
+  unfollowProfile: username => dispatch({ type: types.UNFOLLOW_PROFILE_START, username })
 })
 
 class ArticlePage extends Component {
@@ -21,16 +23,18 @@ class ArticlePage extends Component {
   }
 
   render() {
-    const { article, isArticleLoading } = this.props
-    
+    const { article, isArticleLoading, followProfile, unfollowProfile } = this.props
+
     if (!article) {
       return null
     }
-    
+
     return (
       <div className="article-page">
         <Banner title={article.title}>
-          <ArticleMeta />
+          <ArticleMeta article={article}
+            onClickFollowProfile={followProfile}
+            onClickUnfollowProfile={unfollowProfile} />
         </Banner>
 
         <div className="container page">
@@ -43,7 +47,9 @@ class ArticlePage extends Component {
           </div>
           <hr />
           <div className="article-actions">
-            <ArticleMeta article={article}/>
+            <ArticleMeta article={article}
+              onClickFollowProfile={followProfile}
+              onClickUnfollowProfile={unfollowProfile} />
           </div>
 
           <div className="row">

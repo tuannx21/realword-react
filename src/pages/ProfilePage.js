@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { GET_PROFILE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START } from '../store/constant'
+import { GET_PROFILE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, CLEAR_PROFILE } from '../store/constant'
 
 const mapStateToProps = state => ({
   currentProfile: state.user.profile
@@ -8,8 +8,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getProfile: username => dispatch({ type: GET_PROFILE_START, username }),
-  followProfile: username => dispatch({ type: FOLLOW_PROFILE_START, username}),
-  unfollowProfile: username => dispatch({ type: UNFOLLOW_PROFILE_START, username})
+  followProfile: username => dispatch({ type: FOLLOW_PROFILE_START, username }),
+  unfollowProfile: username => dispatch({ type: UNFOLLOW_PROFILE_START, username }),
+  onUnload: () => dispatch({ type: CLEAR_PROFILE })
 })
 
 class ProfilePage extends Component {
@@ -17,12 +18,16 @@ class ProfilePage extends Component {
     this.props.getProfile(this.props.match.params.username)
   }
 
+  componentWillUnmount() {
+    this.props.onUnload()
+  }
+
   render() {
     const { currentProfile } = this.props
 
-    const followUserButton = currentProfile.following 
-    ? <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.unfollowProfile(currentProfile.username)}><i className="ion-minus-round"></i>&nbsp;Unfollow Eric Simons</button>
-    : <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.followProfile(currentProfile.username)}><i className="ion-plus-round"></i>&nbsp;Follow Eric Simons</button>
+    const followUserButton = currentProfile.following
+      ? <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.unfollowProfile(currentProfile.username)}><i className="ion-minus-round"></i>&nbsp;Unfollow {currentProfile.username}</button>
+      : <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.followProfile(currentProfile.username)}><i className="ion-plus-round"></i>&nbsp;Follow {currentProfile.username}</button>
 
     return (
       <div className="profile-page">
