@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { GET_PROFILE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, CLEAR_PROFILE } from '../store/constant'
 
 const mapStateToProps = state => ({
-  currentProfile: state.user.profile
+  currentProfile: state.user.profile,
+  currentUser: state.auth.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -23,12 +24,14 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { currentProfile } = this.props
+    const { currentProfile, currentUser } = this.props
 
-    const followUserButton = currentProfile.following
+    const followUserButton = () => {
+      if (currentUser.username === currentProfile.username) return null
+      return currentProfile.following
       ? <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.unfollowProfile(currentProfile.username)}><i className="ion-minus-round"></i>&nbsp;Unfollow {currentProfile.username}</button>
       : <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => this.props.followProfile(currentProfile.username)}><i className="ion-plus-round"></i>&nbsp;Follow {currentProfile.username}</button>
-
+    }
     return (
       <div className="profile-page">
         <div className="user-info">
@@ -38,7 +41,7 @@ class ProfilePage extends Component {
                 <img src={currentProfile.image} className="user-img" alt="avatar" />
                 <h4>{currentProfile.username}</h4>
                 <p>{currentProfile.bio}</p>
-                {followUserButton}
+                {followUserButton()}
               </div>
             </div>
           </div>

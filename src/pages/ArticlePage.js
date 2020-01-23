@@ -7,6 +7,7 @@ import CommentList from '../component/CommentList'
 import * as types from '../store/constant'
 
 const mapStateToProps = state => ({
+  author: state.user.profile,
   article: state.article.article,
   isArticleLoading: state.article.isLoading
 })
@@ -23,7 +24,7 @@ class ArticlePage extends Component {
   }
 
   render() {
-    const { article, isArticleLoading, followProfile, unfollowProfile } = this.props
+    const { article, isArticleLoading, followProfile, unfollowProfile, author } = this.props
 
     if (!article) {
       return null
@@ -32,7 +33,7 @@ class ArticlePage extends Component {
     return (
       <div className="article-page">
         <Banner title={article.title}>
-          <ArticleMeta article={article}
+          <ArticleMeta article={article} author={author}
             onClickFollowProfile={followProfile}
             onClickUnfollowProfile={unfollowProfile} />
         </Banner>
@@ -47,7 +48,7 @@ class ArticlePage extends Component {
           </div>
           <hr />
           <div className="article-actions">
-            <ArticleMeta article={article}
+            <ArticleMeta article={article} author={author}
               onClickFollowProfile={followProfile}
               onClickUnfollowProfile={unfollowProfile} />
           </div>

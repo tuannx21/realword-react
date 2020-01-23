@@ -5,3 +5,7 @@ export const displayErrors = errors => {
     return errors[errorKey].map(line => (<li key={errorKey}>{`${errorKey} ${line}`}</li>))
   })
 }
+
+export const formatDate = date => {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+}

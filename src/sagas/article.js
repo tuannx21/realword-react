@@ -16,7 +16,9 @@ function* fetchArticles() {
 function* fetchArticle(action) {
   try {
     const data = yield Article.findBySlug(action.slug)
+    const author = data.article.author
 
+    yield put({ type: types.GET_PROFILE_SUCCESS, data: { profile: author } })
     yield put({ type: types.FETCH_ARTICLE_SUCCESS, data })
   } catch (error) {
     yield put({ type: types.FETCH_TAGS_FAIL, error })

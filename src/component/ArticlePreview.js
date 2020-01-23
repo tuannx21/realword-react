@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { formatDate } from '../helpers/utils'
 
 function ArticlePreview(props) {
-  const { slug, title, description, body, tagList, favorited, createdAt, favoritesCount, author } = props.article
+  const { slug, title, description, tagList, favorited, createdAt, favoritesCount, author } = props.article
 
   return (
     <div className="article-preview">
@@ -10,7 +11,7 @@ function ArticlePreview(props) {
         <Link to={`/user/@${author.username}`}><img src={author.image} alt="img" /></Link>
         <div className="info">
           <Link to={`/user/@${author.username}`} className="author">{author.username}</Link>
-          <span className="date">{createdAt}</span>
+          <span className="date">{formatDate(new Date(createdAt))}</span>
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right"><i className="ion-heart"></i> {favoritesCount}</button>
       </div>
