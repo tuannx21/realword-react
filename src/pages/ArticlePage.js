@@ -4,7 +4,7 @@ import ArticleMeta from '../component/ArticleMeta'
 import Banner from '../component/Banner'
 import CommentInput from '../component/CommentInput'
 import CommentList from '../component/CommentList'
-import * as types from '../store/constant'
+import { FETCH_ARTICLE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START } from '../store/constant'
 
 const mapStateToProps = state => ({
   author: state.user.profile,
@@ -13,9 +13,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticle: slug => dispatch({ type: types.FETCH_ARTICLE_START, slug }),
-  followProfile: username => dispatch({ type: types.FOLLOW_PROFILE_START, username }),
-  unfollowProfile: username => dispatch({ type: types.UNFOLLOW_PROFILE_START, username })
+  fetchArticle: slug => dispatch({ type: FETCH_ARTICLE_START, slug }),
+  followProfile: username => dispatch({ type: FOLLOW_PROFILE_START, username }),
+  unfollowProfile: username => dispatch({ type: UNFOLLOW_PROFILE_START, username }),
+  favoriteArticle: slug => dispatch({ type: FAVORITE_ARTICLE_START, slug }),
+  unfavoriteArticle: slug => dispatch({ type: UNFAVORITE_ARTICLE_START, slug })
 })
 
 class ArticlePage extends Component {
@@ -24,7 +26,7 @@ class ArticlePage extends Component {
   }
 
   render() {
-    const { article, isArticleLoading, followProfile, unfollowProfile, author } = this.props
+    const { article, isArticleLoading, followProfile, unfollowProfile, author, favoriteArticle, unfavoriteArticle } = this.props
 
     if (!article) {
       return null
@@ -35,7 +37,9 @@ class ArticlePage extends Component {
         <Banner title={article.title}>
           <ArticleMeta article={article} author={author}
             onClickFollowProfile={followProfile}
-            onClickUnfollowProfile={unfollowProfile} />
+            onClickUnfollowProfile={unfollowProfile}
+            onClickFavoritePost={favoriteArticle}
+            onClickUnfavoritePost={unfavoriteArticle} />
         </Banner>
 
         <div className="container page">
@@ -50,7 +54,9 @@ class ArticlePage extends Component {
           <div className="article-actions">
             <ArticleMeta article={article} author={author}
               onClickFollowProfile={followProfile}
-              onClickUnfollowProfile={unfollowProfile} />
+              onClickUnfollowProfile={unfollowProfile}
+              onClickFavoritePost={favoriteArticle}
+            onClickUnfavoritePost={unfavoriteArticle} />
           </div>
 
           <div className="row">

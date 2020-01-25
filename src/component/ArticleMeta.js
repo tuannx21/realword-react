@@ -3,13 +3,13 @@ import { formatDate } from '../helpers/utils'
 import { Link } from 'react-router-dom'
 
 function ArticleMeta(props) {
-  const { article, author, onClickFollowProfile, onClickUnfollowProfile } = props
+  const { article, author, onClickFollowProfile, onClickUnfollowProfile, onClickFavoritePost, onClickUnfavoritePost } = props
 
   const favoriteButton = article.favorited
-    ? <button className="btn btn-sm btn-primary">
+    ? <button className="btn btn-sm btn-primary" onClick={() => onClickUnfavoritePost(article.slug)}>
       <i className="ion-heart"></i> Unfavorite Post <span className="counter">({article.favoritesCount})</span>
     </button>
-    : <button className="btn btn-sm btn-outline-primary">
+    : <button className="btn btn-sm btn-outline-primary" onClick={() => onClickFavoritePost(article.slug)}>
       <i className="ion-heart"></i> Favorite Post <span className="counter">({article.favoritesCount})</span>
     </button>
 
@@ -25,6 +25,7 @@ function ArticleMeta(props) {
         <span className="date">{formatDate(new Date(article.createdAt))}</span>
       </div>
       {followUserButton}
+      &nbsp;
       {favoriteButton}
     </div>
   )

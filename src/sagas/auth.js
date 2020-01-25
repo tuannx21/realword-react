@@ -1,18 +1,18 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import * as types from '../store/constant'
 import { push } from 'connected-react-router'
 import { Auth, User, setToken } from './api'
+import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, LOGIN_START, LOGOUT_START, FETCH_CURRENT_USER, REGISTER_START } from '../store/constant'
 
 function* login(action) {
   try {
     const data = yield Auth.login(action.user)
 
-    yield put({ type: types.LOGIN_SUCCESS, data })
+    yield put({ type: LOGIN_SUCCESS, data })
     yield setToken(data.user.token)
     yield localStorage.setItem('token', data.user.token)
     yield put(push('/'))
   } catch (error) {
-    yield put({ type: types.LOGIN_FAIL, error: error.response.data.errors })
+    yield put({ type: LOGIN_FAIL, error: error.response.data.errors })
     yield put(push('/login'))
   }
 }
@@ -21,12 +21,12 @@ function* register(action) {
   try {
     const data = yield Auth.register(action.user)
 
-    yield put({ type: types.REGISTER_SUCCESS, data })
+    yield put({ type: REGISTER_SUCCESS, data })
     yield setToken(data.user.token)
     yield localStorage.setItem('token', data.user.token)
     yield put(push('/'))
   } catch (error) {
-    yield put({ type: types.REGISTER_FAIL, error: error.response.data.errors })
+    yield put({ type: REGISTER_FAIL, error: error.response.data.errors })
     yield put(push('/signup'))
   }
 }
@@ -34,7 +34,7 @@ function* register(action) {
 function* logout() {
   yield localStorage.removeItem('token')
   yield setToken('')
-  yield put({ type: types.LOGOUT_SUCCESS })
+  yield put({ type: LOGOUT_SUCCESS })
 }
 
 function* fetchCurrentUser() {
@@ -44,15 +44,15 @@ function* fetchCurrentUser() {
 
     yield setToken(storedToken)
     const data = yield User.getCurrent()
-    yield put({ type: types.LOGIN_SUCCESS, data })
+    yield put({ type: LOGIN_SUCCESS, data })
   } catch (error) {
     throw new Error(error)
   }
 }
 
 export default function* authWatcher() {
-  yield takeLatest(types.LOGIN_START, login)
-  yield takeLatest(types.LOGOUT_START, logout)
-  yield takeLatest(types.FETCH_CURRENT_USER, fetchCurrentUser)
-  yield takeLatest(types.REGISTER_START, register)
+  yield takeLatest(LOGIN_START, login)
+  yield takeLatest(LOGOUT_START, logout)
+  yield takeLatest(FETCH_CURRENT_USER, fetchCurrentUser)
+  yield takeLatest(REGISTER_START, register)
 }

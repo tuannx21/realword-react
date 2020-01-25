@@ -21,10 +21,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class App extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props)
     this.props.getCurrentUser()
   }
-
+  
   render() {
     return (
       <div className="App">

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
-import * as types from '../store/constant'
+import { FETCH_ARTICLES_START, FETCH_TAGS_START } from '../store/constant'
 
 const mapStateToProps = state => ({
   isAritclesLoading: state.articles.isLoading,
@@ -13,8 +13,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticles: () => dispatch({ type: types.FETCH_ARTICLES_START }),
-  fetchTags: () => dispatch({ type: types.FETCH_TAGS_START })
+  fetchArticles: () => dispatch({ type: FETCH_ARTICLES_START }),
+  fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
 })
 
 class HomePage extends Component {
