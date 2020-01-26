@@ -25,25 +25,17 @@ class App extends Component {
     super(props)
     this.props.getCurrentUser()
   }
-  
+
   render() {
     return (
       <div className="App">
         <ConnectedRouter history={history}>
           <Header />
           <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/editor">
-              <EditArticlePage />
-            </Route>
-            <Route path="/setting">
-              <SettingPage />
-            </Route>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/editor" component={EditArticlePage} />
+            <Route path="/setting" component={SettingPage} />
             <Route path="/signup" component={RegisterPage} />
             <Route path="/article/:articleSlug" component={ArticlePage} />
             <Route path="/user/@:username" component={ProfilePage} />

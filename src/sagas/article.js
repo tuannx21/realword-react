@@ -1,6 +1,6 @@
 import { Article } from './api'
 import { put, takeLatest } from 'redux-saga/effects'
-import { FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAIL, GET_PROFILE_SUCCESS, FETCH_ARTICLE_SUCCESS, FETCH_TAGS_FAIL, FETCH_ARTICLES_START, FETCH_ARTICLE_START, FAVORITE_ARTICLE_SUCCESS, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START } from '../store/constant'
+import { FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAIL, GET_PROFILE_SUCCESS, FETCH_ARTICLE_SUCCESS, FETCH_TAGS_FAIL, FETCH_ARTICLES_START, FETCH_ARTICLE_START, FAVORITE_ARTICLE_SUCCESS, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START, CREATE_ARTICLE_FAIL, CREATE_ARTICLE_START } from '../store/constant'
 import { push } from 'connected-react-router'
 
 
@@ -50,10 +50,21 @@ function* unfavoriteArticle(action) {
   }
 }
 
+function* createArticle(action) {
+  try {
+    const data = yield Article.create(action.article)
+
+    yield put(push(`/article/${data.article.slug}`))
+  } catch (error) {
+    yield put({ type: CREATE_ARTICLE_FAIL, error: error.response.data.errors })
+  }
+}
+
 
 export default function* articleWatcher() {
   yield takeLatest(FETCH_ARTICLES_START, fetchArticles)
   yield takeLatest(FETCH_ARTICLE_START, fetchArticle)
   yield takeLatest(FAVORITE_ARTICLE_START, favoriteArticle)
   yield takeLatest(UNFAVORITE_ARTICLE_START, unfavoriteArticle)
+  yield takeLatest(CREATE_ARTICLE_START, createArticle)
 }

@@ -3,7 +3,7 @@ import { FETCH_TAGS_START, FETCH_TAGS_SUCCESS, FETCH_TAGS_FAIL } from "../consta
 const initialState = {
   isLoading: false,
   tags: [],
-  error: null
+  error: {}
 }
 
 export default (state = initialState, action) => {

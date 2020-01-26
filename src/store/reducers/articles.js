@@ -16,16 +16,10 @@ export default (state = initialState, action) => {
       return { ...state, isLoading: false, error: action.error }
     case FAVORITE_ARTICLE_SUCCESS:
     case UNFAVORITE_ARTICLE_SUCCESS:
-      return { ...state, articles: state.articles.map(article => {
-        if (article.slug === action.data.article.slug) {
-          return {
-            ...article,
-            favorited: action.data.article.favorited,
-            favoritesCount: action.data.article.favoritesCount
-          }
-        }
-        return article
-      })}
+      return {
+        ...state,
+        articles: state.articles.map(article => article.slug === action.data.article.slug ? action.data.article : article)
+      }
     default:
       return state
   }
