@@ -28,7 +28,7 @@ class ArticlePage extends Component {
 
   render() {
     const { article, isArticleLoading, followProfile, unfollowProfile, author, favoriteArticle, unfavoriteArticle } = this.props
-    const { tagList } = article
+
     if (isArticleLoading) {
       return (<div>loading ...</div>)
     }
@@ -49,7 +49,7 @@ class ArticlePage extends Component {
               <p>{article.title}</p>
               <h2 id="introducing-ionic">{article.description}</h2>
               <p>{article.body}</p>
-              <TagList tags={tagList} isOutline/>
+              <TagList tags={article.tagList} isOutline/>
             </div>
           </div>
           <hr />

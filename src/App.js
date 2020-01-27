@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { history } from './store'
@@ -15,6 +15,10 @@ import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
 import { FETCH_CURRENT_USER } from './store/constant';
+
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser
+})
 
 const mapDispatchToProps = dispatch => ({
   getCurrentUser: () => dispatch({ type: FETCH_CURRENT_USER })
@@ -33,7 +37,7 @@ class App extends Component {
           <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path="/login" component={LoginPage} />
+            <Route path="/login" render={() => this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
             <Route path="/editor" component={EditArticlePage} />
             <Route path="/setting" component={SettingPage} />
             <Route path="/signup" component={RegisterPage} />
@@ -47,4 +51,4 @@ class App extends Component {
   }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
