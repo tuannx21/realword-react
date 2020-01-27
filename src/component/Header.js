@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { LOGOUT_START } from '../store/constant'
 
@@ -8,16 +8,16 @@ const LogInView = props => {
   return (
     <ul className="nav navbar-nav pull-xs-right">
       <li className="nav-item">
-        <Link to="/" className="nav-link active">Home</Link>
+        <NavLink exact to="/" className="nav-link">Home</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/editor" className="nav-link"><i className="ion-compose"></i> New Post</Link>
+        <NavLink to="/editor" className="nav-link"><i className="ion-compose"></i> New Post</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/setting" className="nav-link"><i className="ion-gear-a"></i> Settings</Link>
+        <NavLink to="/setting" className="nav-link"><i className="ion-gear-a"></i> Settings</NavLink>
       </li>
       <li className="nav-item">
-        <Link to={`/user/@${props.currentUser.username}`} className="nav-link">{props.currentUser.username}</Link>
+        <NavLink to={`/user/@${props.currentUser.username}`} className="nav-link">{props.currentUser.username}</NavLink>
       </li>
       <li className="nav-item">
         <button className="nav-link" onClick={props.onClickLogOut}>Log Out</button>
@@ -31,13 +31,13 @@ const LogOutView = props => {
   return (
     <ul className="nav navbar-nav pull-xs-right">
       <li className="nav-item">
-        <Link to="/" className="nav-link active">Home</Link>
+        <NavLink to="/" className="nav-link">Home</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/login" className="nav-link">Sign in</Link>
+        <NavLink to="/login" className="nav-link">Sign in</NavLink>
       </li>
       <li className="nav-item">
-        <Link to="/signup" className="nav-link">Sign up</Link>
+        <NavLink to="/signup" className="nav-link">Sign up</NavLink>
       </li>
     </ul>
   )
@@ -56,7 +56,7 @@ class Header extends React.Component {
     return (
       <nav className="navbar navbar-light">
         <div className="container">
-          <Link to="/" className="navbar-brand">conduit</Link>
+          <NavLink to="/" className="navbar-brand">conduit</NavLink>
           <LogInView currentUser={this.props.currentUser} onClickLogOut={this.props.logOut} />
           <LogOutView currentUser={this.props.currentUser} />
         </div>

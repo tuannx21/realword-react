@@ -47,4 +47,4 @@ class App extends Component {
   }
 }
 
-export default connect(() => { }, mapDispatchToProps)(App)
+export default connect(() => ({}), mapDispatchToProps)(App)

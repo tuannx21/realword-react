@@ -15,6 +15,7 @@ class EditArticlePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      tagInput: '',
       article: {
         title: '',
         description: '',
@@ -36,6 +37,27 @@ class EditArticlePage extends Component {
     })
   }
 
+  onInputTagChange = event => {
+    this.setState({ tagInput: event.target.value })
+  }
+
+  onKeyUpTagInput = event => {
+    const { article, tagInput } = this.state
+    if (event.keyCode !== 13) return null
+    if (article.tagList.includes(tagInput)) return this.setState({ tagInput: '' })
+
+    this.setState({
+      article: {
+        ...article,
+        tagList: [
+          ...article.tagList,
+          tagInput
+        ]
+      },
+      tagInput: ''
+    })
+  }
+
   onHandleSubmit = event => {
     event.preventDefault()
     this.setState({
@@ -43,6 +65,7 @@ class EditArticlePage extends Component {
         title: '',
         description: '',
         body: '',
+        tagList: []
       }
     })
     this.props.createArticle(this.state.article)
@@ -50,6 +73,7 @@ class EditArticlePage extends Component {
 
   render() {
     const { errors } = this.props
+    const { tagInput, article } = this.state
 
     return (
       <div className="editor-page">
@@ -87,8 +111,15 @@ class EditArticlePage extends Component {
                   <fieldset className="form-group">
                     <input type="text"
                       className="form-control"
-                      placeholder="Enter tags" />
-                    <div className="tag-list"></div>
+                      placeholder="Enter tags"
+                      value={tagInput}
+                      onChange={this.onInputTagChange}
+                      onKeyDown={this.onKeyUpTagInput} />
+                    <div className="tag-list">
+                      {article.tagList.map(tag => (
+                        <span key={tag} className="tag-default tag-pill ng-binding ng-scope"><i className="ion-close-round" />{tag}</span>
+                      ))}
+                    </div>
                   </fieldset>
                   <button className="btn btn-lg pull-xs-right btn-primary"
                     type="button"

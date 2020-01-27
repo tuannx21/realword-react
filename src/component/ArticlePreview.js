@@ -1,4 +1,5 @@
 import React from 'react'
+import TagList from './TagList'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers/utils'
 import { connect } from 'react-redux'
@@ -31,7 +32,8 @@ function ArticlePreview(props) {
         <p>{article.description}</p>
         <span>Read more...</span>
       </Link>
-    </div>
+      <TagList tags={article.tagList} style={{float: 'right'}} isOutline></TagList>
+    </div >
   )
 }
 

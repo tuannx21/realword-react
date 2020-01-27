@@ -4,6 +4,7 @@ import ArticleMeta from '../component/ArticleMeta'
 import Banner from '../component/Banner'
 import CommentInput from '../component/CommentInput'
 import CommentList from '../component/CommentList'
+import TagList from '../component/TagList'
 import { FETCH_ARTICLE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START } from '../store/constant'
 
 const mapStateToProps = state => ({
@@ -27,9 +28,9 @@ class ArticlePage extends Component {
 
   render() {
     const { article, isArticleLoading, followProfile, unfollowProfile, author, favoriteArticle, unfavoriteArticle } = this.props
-
-    if (!article) {
-      return null
+    const { tagList } = article
+    if (isArticleLoading) {
+      return (<div>loading ...</div>)
     }
 
     return (
@@ -48,6 +49,7 @@ class ArticlePage extends Component {
               <p>{article.title}</p>
               <h2 id="introducing-ionic">{article.description}</h2>
               <p>{article.body}</p>
+              <TagList tags={tagList} isOutline/>
             </div>
           </div>
           <hr />
@@ -56,7 +58,7 @@ class ArticlePage extends Component {
               onClickFollowProfile={followProfile}
               onClickUnfollowProfile={unfollowProfile}
               onClickFavoritePost={favoriteArticle}
-            onClickUnfavoritePost={unfavoriteArticle} />
+              onClickUnfavoritePost={unfavoriteArticle} />
           </div>
 
           <div className="row">

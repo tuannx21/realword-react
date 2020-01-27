@@ -15,7 +15,7 @@ const Article = {
   findAll: (params = {}) => axios.get(`/articles`, { params }).then(getResponseData),
   findAllFeed: (params = {}) => axios.get(`/articles/feed`, { params }).then(getResponseData),
   findBySlug: slug => axios.get(`/articles/${slug}`).then(getResponseData),
-  create: article => axios.post(`/articles`, article).then(getResponseData),
+  create: article => axios.post(`/articles`, { article }).then(getResponseData),
   update: (slug, article) => axios.put(`/articles/${slug}`, article).then(getResponseData),
   delete: slug => axios.delete(`/articles/${slug}`),
   favorite: slug => axios.post(`/articles/${slug}/favorite`).then(getResponseData),
@@ -41,7 +41,7 @@ const User = {
 
 const Comment = {
   findAll: slug => axios.get(`/articles/${slug}/comments`).then(getResponseData),
-  create: (slug, comment) => axios.post(`/articles/${slug}/comments`, comment).then(getResponseData),
+  create: (slug, comment) => axios.post(`/articles/${slug}/comments`, { comment }).then(getResponseData),
   delete: (slug, commentId) => axios.delete(`/articles/${slug}/comments/${commentId}`)
 }
 
