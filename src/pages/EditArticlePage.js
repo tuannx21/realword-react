@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
-import { CREATE_ARTICLE_START } from '../store/constant'
+import { CREATE_ARTICLE_START, FETCH_ARTICLE_START, CLEAR_ARTICLE, UPDATE_ARTICLE_START } from '../store/constant'
 import { connect } from 'react-redux'
 import { displayErrors } from '../helpers/utils'
 
 const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+  article: state.article.article,
   errors: state.article.createErrors
 })
 
 const mapDispatchToProps = dispatch => ({
-  createArticle: article => dispatch({ type: CREATE_ARTICLE_START, article })
+  fetchArticle: slug => dispatch({ type: FETCH_ARTICLE_START, slug }),
+  createArticle: article => dispatch({ type: CREATE_ARTICLE_START, article }),
+  updateArticle: (articleSlug, article) => dispatch({ type: UPDATE_ARTICLE_START, articleSlug, article }),
+  onUnload: () => dispatch({ type: CLEAR_ARTICLE })
 })
 
 class EditArticlePage extends Component {
@@ -23,6 +28,36 @@ class EditArticlePage extends Component {
         tagList: []
       }
     }
+    this.canUpdate = null
+  }
+
+  componentDidMount() {
+    const { match, fetchArticle } = this.props
+    if (match.params.articleSlug) fetchArticle(match.params.articleSlug)
+  }
+
+  componentWillUnmount() {
+    this.props.onUnload()
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!props.match.params.articleSlug) return null
+
+    if (props.article.slug 
+      && props.currentUser.username === props.article.author.username
+      && !state.article.title ) {
+      const { title, description, body, tagList } = props.article
+      return {
+        article: {
+          title,
+          description,
+          body,
+          tagList
+        }
+      }
+    }
+
+    return null
   }
 
   onInputChange = event => {
@@ -60,6 +95,9 @@ class EditArticlePage extends Component {
 
   onHandleSubmit = event => {
     event.preventDefault()
+    const { createArticle, updateArticle, match } = this.props
+    const { article } = this.state
+
     this.setState({
       article: {
         title: '',
@@ -68,7 +106,9 @@ class EditArticlePage extends Component {
         tagList: []
       }
     })
-    this.props.createArticle(this.state.article)
+
+    if (match.params.articleSlug) updateArticle(match.params.articleSlug, article)
+    else createArticle(article)
   }
 
   render() {
@@ -92,6 +132,7 @@ class EditArticlePage extends Component {
                       name="title"
                       className="form-control form-control-lg"
                       placeholder="Article Title"
+                      value={article.title}
                       onChange={this.onInputChange} />
                   </fieldset>
                   <fieldset className="form-group">
@@ -99,6 +140,7 @@ class EditArticlePage extends Component {
                       name="description"
                       className="form-control"
                       placeholder="What's this article about?"
+                      value={article.description}
                       onChange={this.onInputChange} />
                   </fieldset>
                   <fieldset className="form-group">
@@ -106,6 +148,7 @@ class EditArticlePage extends Component {
                       name="body"
                       rows="8"
                       placeholder="Write your article (in markdown)"
+                      value={article.body}
                       onChange={this.onInputChange}></textarea>
                   </fieldset>
                   <fieldset className="form-group">

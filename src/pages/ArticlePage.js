@@ -5,7 +5,7 @@ import Banner from '../component/Banner'
 import CommentInput from '../component/CommentInput'
 import CommentList from '../component/CommentList'
 import TagList from '../component/TagList'
-import { FETCH_ARTICLE_START } from '../store/constant'
+import { FETCH_ARTICLE_START, ARTICLE_PAGE_UNLOAD } from '../store/constant'
 
 const mapStateToProps = state => ({
   author: state.user.profile,
@@ -14,12 +14,17 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticle: slug => dispatch({ type: FETCH_ARTICLE_START, slug })
+  fetchArticle: slug => dispatch({ type: FETCH_ARTICLE_START, slug }),
+  onUnload: () => dispatch({type: ARTICLE_PAGE_UNLOAD})
 })
 
 class ArticlePage extends Component {
   componentDidMount() {
     this.props.fetchArticle(this.props.match.params.articleSlug)
+  }
+
+  componentWillUnmount() {
+    this.props.onUnload()
   }
 
   render() {

@@ -18,10 +18,10 @@ const mapDispatchToProps = dispatch => ({
 
 const OwnerView = props => {
   const { article, deleteArticle } = props
-  console.log(article)
+  
   return (
     <span>
-      <button className="btn btn-outline-secondary btn-sm" onClick={() => deleteArticle(article.slug)}><i className="ion-edit"></i> Edit Article</button>
+      <Link to={`/editor/${article.slug}`} className="btn btn-outline-secondary btn-sm"><i className="ion-edit"></i> Edit Article</Link>
       &nbsp;
       <button className="btn btn-outline-danger btn-sm" onClick={() => deleteArticle(article.slug)}><i className="ion-trash-a"></i> Delete Article</button>
     </span>

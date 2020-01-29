@@ -46,7 +46,7 @@ function* unfollowProfile(action) {
   }
 }
 
-export default function* articleWatcher() {
+export default function* userWatcher() {
   yield takeLatest(UPDATE_PROFILE_START, updateUser)
   yield takeLatest(GET_PROFILE_START, getProfile)
   yield takeLatest(FOLLOW_PROFILE_START, followProfile)
