@@ -5,6 +5,7 @@ import article from './article'
 import tags from './tags'
 import auth from './auth'
 import user from './user'
+import comments from './comments'
 
 export default history => combineReducers({
   router: connectRouter(history),
@@ -12,5 +13,6 @@ export default history => combineReducers({
   article,
   tags,
   auth,
-  user
+  user,
+  comments
 })

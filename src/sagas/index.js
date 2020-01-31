@@ -4,6 +4,7 @@ import tagWatcher from './tag'
 import authWatcher from './auth'
 import userWatcher from './user'
 import pageWatcher from './pages'
+import commentWatcher from './comment'
 
 export default function* rootSaga() {
   yield all([
@@ -11,6 +12,7 @@ export default function* rootSaga() {
     tagWatcher(),
     authWatcher(),
     userWatcher(),
-    pageWatcher()
+    pageWatcher(),
+    commentWatcher()
   ])
 }

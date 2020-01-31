@@ -43,9 +43,9 @@ class EditArticlePage extends Component {
   static getDerivedStateFromProps(props, state) {
     if (!props.match.params.articleSlug) return null
 
-    if (props.article.slug 
+    if (props.article.slug
       && props.currentUser.username === props.article.author.username
-      && !state.article.title ) {
+      && !state.article.title) {
       const { title, description, body, tagList } = props.article
       return {
         article: {
@@ -78,6 +78,7 @@ class EditArticlePage extends Component {
 
   onKeyUpTagInput = event => {
     const { article, tagInput } = this.state
+
     if (event.keyCode !== 13) return null
     if (article.tagList.includes(tagInput)) return this.setState({ tagInput: '' })
 
@@ -90,6 +91,18 @@ class EditArticlePage extends Component {
         ]
       },
       tagInput: ''
+    })
+  }
+
+  onClickRemoveTag = targetTag => {
+    const { article } = this.state
+    this.setState({
+      article: {
+        ...article,
+        tagList: [
+          ...article.tagList.filter(tag => tag !== targetTag)
+        ]
+      }
     })
   }
 
@@ -160,7 +173,9 @@ class EditArticlePage extends Component {
                       onKeyDown={this.onKeyUpTagInput} />
                     <div className="tag-list">
                       {article.tagList.map(tag => (
-                        <span key={tag} className="tag-default tag-pill ng-binding ng-scope"><i className="ion-close-round" />{tag}</span>
+                        <span key={tag} className="tag-default tag-pill ng-binding ng-scope">
+                          <i className="ion-close-round" onClick={() => this.onClickRemoveTag(tag)} />{tag}
+                        </span>
                       ))}
                     </div>
                   </fieldset>

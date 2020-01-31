@@ -16,7 +16,7 @@ const Article = {
   findAllFeed: (params = {}) => axios.get(`/articles/feed`, { params }).then(getResponseData),
   findBySlug: slug => axios.get(`/articles/${slug}`).then(getResponseData),
   create: article => axios.post(`/articles`, { article }).then(getResponseData),
-  update: (slug, article) => axios.put(`/articles/${slug}`, article).then(getResponseData),
+  update: (slug, article) => axios.put(`/articles/${slug}`, { article }).then(getResponseData),
   delete: slug => axios.delete(`/articles/${slug}`),
   favorite: slug => axios.post(`/articles/${slug}/favorite`).then(getResponseData),
   unfavorite: slug => axios.delete(`/articles/${slug}/favorite`).then(getResponseData),
