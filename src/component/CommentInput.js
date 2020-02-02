@@ -41,7 +41,7 @@ class CommentInput extends Component {
   }
 
   onEnterInput = event => {
-    if (event.keyCode !== 13) return null
+    if (event.keyCode !== 13 || event.shiftKey === true) return null
     this.handleCreateComment()
   }
 

@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
         ]
       }
     case DELETE_COMMENT_SUCCESS:
-      return { ...state, comments: state.comments.filter(comment => comment.id === action.commentId) }
+      return { ...state, comments: state.comments.filter(comment => comment.id !== action.id) }
     case CREATE_ARTICLE_START:
     default:
       return state

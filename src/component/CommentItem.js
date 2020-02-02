@@ -1,9 +1,24 @@
 import React from 'react'
 import { formatDate } from '../helpers/utils'
 import { Link } from 'react-router-dom'
+import { DELETE_COMMENT_START } from '../store/constant'
+import { connect } from 'react-redux'
 
-function Comment(props) {
-  const { comment } = props
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+  article: state.article.article
+})
+
+const mapDispatchToProps = dispatch => ({
+  deleteComment: (slug, id) => dispatch({ type: DELETE_COMMENT_START, slug, id })
+})
+
+function CommentItem(props) {
+  const { comment, article, currentUser, deleteComment } = props
+
+  const canDelete = currentUser.username === comment.author.username 
+  ? <span className="mod-options"><i className="ion-trash-a" onClick={() => deleteComment(article.slug, comment.id)}></i></span>
+  : <span></span>
 
   return (
     <div className="card">
@@ -16,9 +31,10 @@ function Comment(props) {
         </Link>&nbsp;
         <Link to={`/user/@${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
         <span className="date-posted">{formatDate(new Date(comment.createdAt))}</span>
+        {canDelete}
       </div>
     </div>
   )
 }
 
-export default Comment
+export default connect(mapStateToProps, mapDispatchToProps)(CommentItem)
