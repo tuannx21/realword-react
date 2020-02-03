@@ -1,4 +1,4 @@
-import * as types from '../constant'
+import { LOGIN_SUCCESS, REGISTER_SUCCESS, UPDATE_PROFILE_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, UPDATE_PROFILE_FAIL, LOGOUT_SUCCESS, CLEAR_ALL_AUTH_ERRORS } from "../constant"
 
 const initialState = {
   errorsLogin: {},
@@ -9,19 +9,19 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.LOGIN_SUCCESS:
-    case types.REGISTER_SUCCESS:
-    case types.UPDATE_PROFILE_SUCCESS:
+    case LOGIN_SUCCESS:
+    case REGISTER_SUCCESS:
+    case UPDATE_PROFILE_SUCCESS:
       return { ...state, currentUser: action.data.user }
-    case types.LOGIN_FAIL:
+    case LOGIN_FAIL:
       return { ...state, errorsLogin: action.error }
-    case types.REGISTER_FAIL:
+    case REGISTER_FAIL:
       return { ...state, errorsRegister: action.error }
-    case types.UPDATE_PROFILE_FAIL:
+    case UPDATE_PROFILE_FAIL:
       return { ...state, errorsUpdateProfile: action.error }
-    case types.LOGOUT_SUCCESS:
+    case LOGOUT_SUCCESS:
       return { ...state, currentUser: {} }
-    case types.CLEAR_ALL_AUTH_ERRORS:
+    case CLEAR_ALL_AUTH_ERRORS:
       return { ...state, errorsLogin: {}, errorsRegister: {} }
     default:
       return state

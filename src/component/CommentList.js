@@ -6,13 +6,11 @@ function Commentlist(props) {
 
   return (
     <div className="comment-list">
-      {/* {
+      {
         comments.map(comment => (
-          <CommentItem />
+          <CommentItem key={comment.id} comment={comment} />
         ))
-      } */}
-      <CommentItem />
-      <CommentItem />
+      }
     </div>
   )
 }

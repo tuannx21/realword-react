@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { UPDATE_PROFILE_START } from '../store/constant'
+import { UPDATE_PROFILE_START, CLEAR_PROFILE } from '../store/constant'
 import { displayErrors } from '../helpers/utils'
 
 const mapStateToProps = state => ({
@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: user => dispatch({ type: UPDATE_PROFILE_START, user })
+  updateProfile: user => dispatch({ type: UPDATE_PROFILE_START, user }),
+  onUnload: () => dispatch({type: CLEAR_PROFILE})
 })
 
 class SettingPage extends Component {
@@ -27,13 +28,21 @@ class SettingPage extends Component {
   }
 
   componentDidMount() {
-    if (this.props.currentUser) this.setState({ user: { ...this.props.currentUser } })
+    if (this.props.currentUser.username) this.setState({ user: { ...this.props.currentUser } })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentUser) {
-      this.setState({ user: { ...nextProps.currentUser } })
+  componentWillUnmount() {
+    this.props.onUnload()
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.currentUser.username && !state.user.username) {
+      return {
+        user: { ...props.currentUser }
+      }
     }
+
+    return null
   }
 
   onInputChange = event => {

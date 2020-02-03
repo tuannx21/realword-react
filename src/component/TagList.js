@@ -1,14 +1,18 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function TagList(props) {
+  const {tags, isOutline, style} = props
+  if (!tags) return null
+
   return (
-    <div className="tag-list">
+    <ul className="tag-list" style={style}>
       {
-        props.tags.map(tag => (
-          <a key={tag} href="/" className="tag-pill tag-default">{tag}</a>
+        tags.map(tag => (
+          <Link key={tag} to="/" className={`tag-pill tag-default ${isOutline && 'tag-outline'}`}>{tag}</Link>
         ))
       }
-    </div>
+    </ul>
   )
 }
 
