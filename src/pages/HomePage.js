@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticles: () => dispatch({ type: FETCH_ARTICLES_START }),
+  fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params}),
   fetchArticlesFeed: () => dispatch({type: FETCH_ARTICLES_FEED_START}),
   fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
 })

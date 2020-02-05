@@ -4,9 +4,9 @@ import { FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAIL, GET_PROFILE_SUCCESS, FETCH
 import { push } from 'connected-react-router'
 
 
-function* fetchArticles() {
+function* fetchArticles(action) {
   try {
-    const data = yield Article.findAll()
+    const data = yield Article.findAll(action.params)
 
     yield put({ type: FETCH_ARTICLES_SUCCESS, data })
   } catch (error) {
