@@ -37,12 +37,15 @@ class App extends Component {
           <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route path="/feed" component={HomePage} />
+            <Route path="/#:tag" component={HomePage} />
             <Route path="/login" render={() => this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
             <Route path="/editor/:articleSlug?" component={EditArticlePage} />
             <Route path="/setting" component={SettingPage} />
             <Route path="/signup" component={RegisterPage} />
             <Route path="/article/:articleSlug" component={ArticlePage} />
             <Route path="/user/@:username" component={ProfilePage} />
+            <Route component={HomePage} />
           </Switch>
           <Footer />
         </ConnectedRouter>

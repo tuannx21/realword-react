@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
-import { FETCH_ARTICLES_START, FETCH_TAGS_START } from '../store/constant'
+import { FETCH_ARTICLES_START, FETCH_TAGS_START, FETCH_ARTICLES_FEED_START } from '../store/constant'
+import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = state => ({
   isAritclesLoading: state.articles.isLoading,
@@ -14,13 +15,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchArticles: () => dispatch({ type: FETCH_ARTICLES_START }),
+  fetchArticlesFeed: () => dispatch({type: FETCH_ARTICLES_FEED_START}),
   fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
 })
 
 class HomePage extends Component {
   componentDidMount() {
-    this.props.fetchArticles()
-    this.props.fetchTags()
+    const {fetchArticles, fetchArticlesFeed, fetchTags, match} = this.props
+
+    match.path === '/feed' ? fetchArticlesFeed() : fetchArticles()
+    fetchTags()
   }
 
   render() {
@@ -38,10 +42,10 @@ class HomePage extends Component {
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    <a className="nav-link disabled" href="/">Your Feed</a>
+                    <NavLink to="/feed" className="nav-link" onClick={this.props.fetchArticlesFeed}>Your Feed</NavLink>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link active" href="/">Global Feed</a>
+                    <NavLink exact to="/" className="nav-link" onClick={this.props.fetchArticles}>Global Feed</NavLink>
                   </li>
                 </ul>
               </div>

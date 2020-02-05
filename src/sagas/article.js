@@ -1,6 +1,6 @@
 import { Article } from './api'
 import { put, takeLatest } from 'redux-saga/effects'
-import { FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAIL, GET_PROFILE_SUCCESS, FETCH_ARTICLE_SUCCESS, FETCH_TAGS_FAIL, FETCH_ARTICLES_START, FETCH_ARTICLE_START, FAVORITE_ARTICLE_SUCCESS, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START, CREATE_ARTICLE_FAIL, CREATE_ARTICLE_START, DELETE_ARTICLE_FAIL, DELETE_ARTICLE_START, UPDATE_ARTICLE_FAIL, UPDATE_ARTICLE_START } from '../store/constant'
+import { FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAIL, GET_PROFILE_SUCCESS, FETCH_ARTICLE_SUCCESS, FETCH_TAGS_FAIL, FETCH_ARTICLES_START, FETCH_ARTICLE_START, FAVORITE_ARTICLE_SUCCESS, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START, CREATE_ARTICLE_FAIL, CREATE_ARTICLE_START, DELETE_ARTICLE_FAIL, DELETE_ARTICLE_START, UPDATE_ARTICLE_FAIL, UPDATE_ARTICLE_START, FETCH_ARTICLES_FEED_SUCCESS, FETCH_ARTICLES_FEED_FAIL, FETCH_ARTICLES_FEED_START } from '../store/constant'
 import { push } from 'connected-react-router'
 
 
@@ -11,6 +11,16 @@ function* fetchArticles() {
     yield put({ type: FETCH_ARTICLES_SUCCESS, data })
   } catch (error) {
     yield put({ type: FETCH_ARTICLES_FAIL, error })
+  }
+}
+
+function* fetchArticlesFeed() {
+  try {
+    const data = yield Article.findAllFeed()
+
+    yield put({ type: FETCH_ARTICLES_FEED_SUCCESS, data })
+  } catch (error) {
+    yield put({ type: FETCH_ARTICLES_FEED_FAIL, error })
   }
 }
 
@@ -83,6 +93,7 @@ function* deleteArticle(action) {
 
 export default function* articleWatcher() {
   yield takeLatest(FETCH_ARTICLES_START, fetchArticles)
+  yield takeLatest(FETCH_ARTICLES_FEED_START, fetchArticlesFeed)
   yield takeLatest(FETCH_ARTICLE_START, fetchArticle)
   yield takeLatest(FAVORITE_ARTICLE_START, favoriteArticle)
   yield takeLatest(UNFAVORITE_ARTICLE_START, unfavoriteArticle)
