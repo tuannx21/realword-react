@@ -9,7 +9,7 @@ function TagList(props) {
     <ul className="tag-list" style={style}>
       {
         tags.map(tag => (
-          <Link key={tag} to="/" className={`tag-pill tag-default ${isOutline && 'tag-outline'}`}>{tag}</Link>
+          <Link key={tag} to={`/explore/tags/${tag}`} className={`tag-pill tag-default ${isOutline && 'tag-outline'}`}>{tag}</Link>
         ))
       }
     </ul>

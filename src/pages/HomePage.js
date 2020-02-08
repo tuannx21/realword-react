@@ -14,20 +14,30 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params}),
-  fetchArticlesFeed: () => dispatch({type: FETCH_ARTICLES_FEED_START}),
+  fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params }),
+  fetchArticlesFeed: () => dispatch({ type: FETCH_ARTICLES_FEED_START }),
   fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
 })
 
 class HomePage extends Component {
   componentDidMount() {
-    const {fetchArticles, fetchArticlesFeed, fetchTags, match} = this.props
-
-    match.path === '/feed' ? fetchArticlesFeed() : fetchArticles()
+    const { fetchArticles, fetchArticlesFeed, fetchTags, match } = this.props
+    match.path === '/feed' ? fetchArticlesFeed() : fetchArticles({ tag: match.params.tag })
     fetchTags()
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.tag !== this.props.match.params.tag) this.props.fetchArticles({ tag: this.props.match.params.tag })
+  }
+
   render() {
+    const { match } = this.props
+    const tabCurrentTag = match.params.tag
+      ? <li className="nav-item">
+        <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
+      </li>
+      : null
+
     return (
       <div className="home-page">
 
@@ -42,11 +52,12 @@ class HomePage extends Component {
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    <NavLink to="/feed" className="nav-link" onClick={this.props.fetchArticlesFeed}>Your Feed</NavLink>
+                    <NavLink to="/feed" className="nav-link" onClick={() => this.props.fetchArticlesFeed()}>Your Feed</NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink exact to="/" className="nav-link" onClick={this.props.fetchArticles}>Global Feed</NavLink>
+                    <NavLink exact to="/" className="nav-link" onClick={() => this.props.fetchArticles()}>Global Feed</NavLink>
                   </li>
+                  {tabCurrentTag}
                 </ul>
               </div>
               <ArticleList isError={this.props.fetchArticlesError} isLoading={this.props.isAritclesLoading} articles={this.props.articles} />

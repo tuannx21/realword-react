@@ -38,7 +38,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/feed" component={HomePage} />
-            <Route path="/#:tag" component={HomePage} />
+            <Route path="/explore/tags/:tag" component={HomePage} />
             <Route path="/login" render={() => this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
             <Route path="/editor/:articleSlug?" component={EditArticlePage} />
             <Route path="/setting" component={SettingPage} />
