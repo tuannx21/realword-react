@@ -44,13 +44,15 @@ class App extends Component {
             <Route path="/setting" component={SettingPage} />
             <Route path="/signup" component={RegisterPage} />
             <Route path="/article/:articleSlug" component={ArticlePage} />
-            <Route path="/user/@:username" component={ProfilePage} />
+            <Route exact path="/user/@:username" component={ProfilePage} />
+            <Route path="/user/@:username/favorited" component={ProfilePage} />
             <Route component={HomePage} />
           </Switch>
           <Footer />
         </ConnectedRouter>
       </div>
     )
+
   }
 }
 
