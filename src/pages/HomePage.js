@@ -9,7 +9,6 @@ import { NavLink } from 'react-router-dom'
 const mapStateToProps = state => ({
   isAritclesLoading: state.articles.isLoading,
   fetchArticlesError: state.articles.error,
-  articles: state.articles.articles,
   tags: state.tags.tags
 })
 
@@ -22,6 +21,7 @@ const mapDispatchToProps = dispatch => ({
 class HomePage extends Component {
   componentDidMount() {
     const { fetchArticles, fetchArticlesFeed, fetchTags, match } = this.props
+
     match.path === '/feed' ? fetchArticlesFeed() : fetchArticles({ tag: match.params.tag })
     fetchTags()
   }
@@ -32,6 +32,7 @@ class HomePage extends Component {
 
   render() {
     const { match } = this.props
+
     const tabCurrentTag = match.params.tag
       ? <li className="nav-item">
         <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
@@ -60,7 +61,7 @@ class HomePage extends Component {
                   {tabCurrentTag}
                 </ul>
               </div>
-              <ArticleList isError={this.props.fetchArticlesError} isLoading={this.props.isAritclesLoading} articles={this.props.articles} />
+              <ArticleList currentUrl={match.url}/>
             </div>
 
             <div className="col-md-3">

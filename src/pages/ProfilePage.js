@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom'
 const mapStateToProps = state => ({
   currentProfile: state.user.profile,
   currentUser: state.auth.currentUser,
-  articles: state.articles.articles
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -39,7 +38,7 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { currentProfile, currentUser, articles } = this.props
+    const { currentProfile, currentUser } = this.props
 
     const followUserButton = () => {
       if (currentUser.username === currentProfile.username) return null
@@ -76,7 +75,7 @@ class ProfilePage extends Component {
                   </li>
                 </ul>
               </div>
-              <ArticleList articles={articles} />
+              <ArticleList />
             </div>
           </div>
         </div>

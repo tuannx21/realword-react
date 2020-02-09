@@ -36,9 +36,9 @@ class App extends Component {
         <ConnectedRouter history={history}>
           <Header />
           <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/feed" component={HomePage} />
-            <Route path="/explore/tags/:tag" component={HomePage} />
+            <Route exact path="/:page?" component={HomePage} />
+            <Route path="/feed/:page?" component={HomePage} />
+            <Route path="/explore/tags/:tag/:page?" component={HomePage} />
             <Route path="/login" render={() => this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
             <Route path="/editor/:articleSlug?" component={EditArticlePage} />
             <Route path="/setting" component={SettingPage} />

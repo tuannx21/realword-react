@@ -18,8 +18,8 @@ export default (state = initialState, action) => {
     case CREATE_COMMENT_SUCCESS:
       return {
         ...state, comments: [
-          ...state.comments,
-          action.data.comment
+          action.data.comment,
+          ...state.comments
         ]
       }
     case DELETE_COMMENT_SUCCESS:
