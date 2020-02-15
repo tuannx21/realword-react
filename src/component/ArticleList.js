@@ -1,17 +1,17 @@
 import React from 'react'
 import ArticlePreview from './ArticlePreview'
+import Pagination from './Pagination'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = state => ({
   articles: state.articles.articles,
+  articlesCount: state.articles.articlesCount,
   isLoading: state.articles.isLoading,
   isError: state.articles.isError
 })
 
 function ArticleList(props) {
-  const { isError, isLoading, articles, currentUrl } = props
-  console.log(currentUrl)
+  const { isError, isLoading, articles, articlesCount } = props
   if (!articles.length) return (<p>No article ...</p>)
   if (isLoading) return (<p>Loading ...</p>)
   if (isError) return (<p>Something went wrong !!!</p>)
@@ -21,13 +21,7 @@ function ArticleList(props) {
         <ArticlePreview key={article.slug} article={article} />
       ))}
 
-      <nav>
-        <ul className="pagination">
-          <li className="page-item active">
-            <NavLink to={`${currentUrl}/1`} className="page-link">1</NavLink>
-          </li>
-        </ul>
-      </nav>
+      <Pagination totalItems={articlesCount} />
     </div>
   )
 }

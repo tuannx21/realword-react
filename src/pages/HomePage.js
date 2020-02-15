@@ -9,7 +9,8 @@ import { NavLink } from 'react-router-dom'
 const mapStateToProps = state => ({
   isAritclesLoading: state.articles.isLoading,
   fetchArticlesError: state.articles.error,
-  tags: state.tags.tags
+  tags: state.tags.tags,
+  location: state.router.location
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -20,9 +21,8 @@ const mapDispatchToProps = dispatch => ({
 
 class HomePage extends Component {
   componentDidMount() {
-    const { fetchArticles, fetchArticlesFeed, fetchTags, match } = this.props
-
-    match.path === '/feed' ? fetchArticlesFeed() : fetchArticles({ tag: match.params.tag })
+    const { fetchArticles, fetchArticlesFeed, fetchTags, match, location } = this.props
+    match.path === '/feed' ? fetchArticlesFeed({...location.query}) : fetchArticles({ ...location.query, tag: match.params.tag })
     fetchTags()
   }
 
@@ -31,7 +31,7 @@ class HomePage extends Component {
   }
 
   render() {
-    const { match } = this.props
+    const { match, location } = this.props
 
     const tabCurrentTag = match.params.tag
       ? <li className="nav-item">
@@ -53,15 +53,15 @@ class HomePage extends Component {
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    <NavLink to="/feed" className="nav-link" onClick={() => this.props.fetchArticlesFeed()}>Your Feed</NavLink>
+                    <NavLink to="/feed" className="nav-link" onClick={() => this.props.fetchArticlesFeed({...location.query})}>Your Feed</NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink exact to="/" className="nav-link" onClick={() => this.props.fetchArticles()}>Global Feed</NavLink>
+                    <NavLink exact to="/" className="nav-link" onClick={() => this.props.fetchArticles({...location.query})}>Global Feed</NavLink>
                   </li>
                   {tabCurrentTag}
                 </ul>
               </div>
-              <ArticleList currentUrl={match.url}/>
+              <ArticleList />
             </div>
 
             <div className="col-md-3">
