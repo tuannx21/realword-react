@@ -9,7 +9,6 @@ const mapStateToProps = state => ({
 function Pagination(props) {
   const { location, totalItems } = props
   const ACTIVE_CLASS = 'active'
-  const PARAMS_OFFSET = 'offset'
 
   const buildPageNumbers = totalItem => {
     let paginList = []
@@ -19,7 +18,7 @@ function Pagination(props) {
     return paginList
   }
 
-  const isPageActive = pageNumber => parseInt(location.query.offset)/10 === pageNumber ? ACTIVE_CLASS : ''
+  const isPageActive = pageNumber => parseInt(location.query.offset)/10 + 1 === pageNumber ? ACTIVE_CLASS : ''
 
   return (
     <nav>
@@ -27,7 +26,7 @@ function Pagination(props) {
         {
           buildPageNumbers(totalItems).map(page => (
             <li key={page} className={`page-item ${!location.query.offset && page === 1 ? ACTIVE_CLASS : isPageActive(page)}`}>
-              <Link to={`${location.pathname}?offset=${page * 10}`} className="page-link">{page}</Link>
+              <Link to={`${location.pathname}?offset=${(page - 1) * 10}`} className="page-link">{page}</Link>
             </li>
           ))
         }

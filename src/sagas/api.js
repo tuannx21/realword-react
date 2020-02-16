@@ -12,8 +12,8 @@ const setToken = token => {
 }
 
 const Article = {
-  findAll: (params = {}) => axios.get(`/articles`, { params: { ...params, limit: 10 || params.limit } }).then(getResponseData),
-  findAllFeed: (params = {}) => axios.get(`/articles/feed`, { params: { ...params, limit: 10 || params.limit } }).then(getResponseData),
+  findAll: (params = {}) => axios.get(`/articles`, { params: { ...params, limit: 10 || params.limit, offset: 0 || params.offset } }).then(getResponseData),
+  findAllFeed: (params = {}) => axios.get(`/articles/feed`, { params: { ...params, limit: 10 || params.limit, offset: 0 || params.offset } }).then(getResponseData),
   findBySlug: slug => axios.get(`/articles/${slug}`).then(getResponseData),
   create: article => axios.post(`/articles`, { article }).then(getResponseData),
   update: (slug, article) => axios.put(`/articles/${slug}`, { article }).then(getResponseData),

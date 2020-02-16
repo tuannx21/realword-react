@@ -14,9 +14,9 @@ function* fetchArticles(action) {
   }
 }
 
-function* fetchArticlesFeed() {
+function* fetchArticlesFeed(action) {
   try {
-    const data = yield Article.findAllFeed()
+    const data = yield Article.findAllFeed(action.params)
 
     yield put({ type: FETCH_ARTICLES_FEED_SUCCESS, data })
   } catch (error) {

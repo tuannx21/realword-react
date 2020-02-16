@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
@@ -15,68 +15,62 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params }),
-  fetchArticlesFeed: () => dispatch({ type: FETCH_ARTICLES_FEED_START }),
+  fetchArticlesFeed: params => dispatch({ type: FETCH_ARTICLES_FEED_START, params }),
   fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
 })
 
-class HomePage extends Component {
-  componentDidMount() {
-    const { fetchArticles, fetchArticlesFeed, fetchTags, match, location } = this.props
-    match.path === '/feed' ? fetchArticlesFeed({...location.query}) : fetchArticles({ ...location.query, tag: match.params.tag })
+const HomePage = props => {
+  const { fetchArticles, fetchArticlesFeed, fetchTags, tags, location, match } = props
+
+  useEffect(() => {
+    match.path === '/feed' ? fetchArticlesFeed({ ...location.query }) : fetchArticles({ ...location.query, tag: match.params.tag })
     fetchTags()
-  }
+  }, [fetchArticles, fetchArticlesFeed, fetchTags, location.query, match])
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.match.params.tag !== this.props.match.params.tag) this.props.fetchArticles({ tag: this.props.match.params.tag })
-  }
 
-  render() {
-    const { match, location } = this.props
+  const tabCurrentTag = match.params.tag
+    ? <li className="nav-item">
+      <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
+    </li>
+    : null
 
-    const tabCurrentTag = match.params.tag
-      ? <li className="nav-item">
-        <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
-      </li>
-      : null
+  return (
+    <div className="home-page">
 
-    return (
-      <div className="home-page">
+      <Banner title="conduit">
+        <p>A place to share your knowledge.</p>
+      </Banner>
 
-        <Banner title="conduit">
-          <p>A place to share your knowledge.</p>
-        </Banner>
+      <div className="container page">
+        <div className="row">
 
-        <div className="container page">
-          <div className="row">
-
-            <div className="col-md-9">
-              <div className="feed-toggle">
-                <ul className="nav nav-pills outline-active">
-                  <li className="nav-item">
-                    <NavLink to="/feed" className="nav-link" onClick={() => this.props.fetchArticlesFeed({...location.query})}>Your Feed</NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink exact to="/" className="nav-link" onClick={() => this.props.fetchArticles({...location.query})}>Global Feed</NavLink>
-                  </li>
-                  {tabCurrentTag}
-                </ul>
-              </div>
-              <ArticleList />
+          <div className="col-md-9">
+            <div className="feed-toggle">
+              <ul className="nav nav-pills outline-active">
+                <li className="nav-item">
+                  <NavLink to="/feed" className="nav-link" onClick={() => fetchArticlesFeed()}>Your Feed</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink exact to="/" className="nav-link" onClick={() => fetchArticles()}>Global Feed</NavLink>
+                </li>
+                {tabCurrentTag}
+              </ul>
             </div>
-
-            <div className="col-md-3">
-              <div className="sidebar">
-                <p>Popular Tags</p>
-                <TagList tags={this.props.tags} />
-              </div>
-            </div>
-
+            <ArticleList />
           </div>
-        </div>
 
+          <div className="col-md-3">
+            <div className="sidebar">
+              <p>Popular Tags</p>
+              <TagList tags={tags} />
+            </div>
+          </div>
+
+        </div>
       </div>
-    )
-  }
+
+    </div>
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
