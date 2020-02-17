@@ -17,7 +17,10 @@ const SettingPage = props => {
   const { currentUser, errors, onUnload, updateProfile } = props
   const [user, setUser] = useState(currentUser)
 
-  useEffect(() => onUnload)
+  useEffect(() => {
+    setUser(currentUser)
+    return onUnload
+  }, [currentUser, onUnload])
 
   const onInputChange = event => {
     const targetValue = event.target.value
@@ -49,7 +52,7 @@ const SettingPage = props => {
                     name="image"
                     type="text"
                     placeholder="URL of profile picture"
-                    value={user.image}
+                    value={user.image || ''}
                     onChange={onInputChange} />
                 </fieldset>
                 <fieldset className="form-group">
@@ -57,7 +60,7 @@ const SettingPage = props => {
                     name="username"
                     type="text"
                     placeholder="Your Name"
-                    value={user.username}
+                    value={user.username || ''}
                     onChange={onInputChange} />
                 </fieldset>
                 <fieldset className="form-group">
@@ -65,7 +68,7 @@ const SettingPage = props => {
                     name="bio"
                     rows="8"
                     placeholder="Short bio about you"
-                    value={user.bio}
+                    value={user.bio || ''}
                     onChange={onInputChange}></textarea>
                 </fieldset>
                 <fieldset className="form-group">
@@ -73,7 +76,7 @@ const SettingPage = props => {
                     name="email"
                     type="text"
                     placeholder="Email"
-                    value={user.email}
+                    value={user.email || ''}
                     onChange={onInputChange} />
                 </fieldset>
                 <fieldset className="form-group">
