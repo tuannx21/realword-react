@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { displayErrors } from '../helpers/utils'
 import { REGISTER_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
-import { connect } from 'react-redux'
-
-const mapStateToProps = state => ({
-  errors: state.auth.errorsRegister
-})
-
-const mapDispatchToProps = dispatch => ({
-  register: user => dispatch({ type: REGISTER_START, user }),
-  clearErrors: () => dispatch({ type: CLEAR_ALL_AUTH_ERRORS })
-})
+import { useSelector, useDispatch } from 'react-redux'
 
 const RegisterPage = props => {
-  const { errors, clearErrors, register } = props
+  const errors = useSelector(state => state.auth.errorsRegister)
+  const dispatch = useDispatch()
+  const register = user => dispatch({ type: REGISTER_START, user })
+  const clearErrors = useCallback(() => dispatch({ type: CLEAR_ALL_AUTH_ERRORS }), [dispatch])
+
   const [user, setUser] = useState({
     email: '',
     username: '',
     password: ''
   })
+
+  useEffect(() => {
+    clearErrors()
+  }, [clearErrors])
 
   const onInputChange = event => {
     const targetValue = event.target.value
@@ -27,10 +26,6 @@ const RegisterPage = props => {
 
     setUser({ ...user, [targetName]: targetValue })
   }
-
-  // componentDidMount() {
-  //   this.props.clearErrors()
-  // }
 
   const onHandleSubmit = event => {
     event.preventDefault()
@@ -92,4 +87,4 @@ const RegisterPage = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
+export default RegisterPage
