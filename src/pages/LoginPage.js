@@ -2,7 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LOGIN_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
-import { displayErrors } from '../helpers/utils'
+import ErrorList from '../component/ErrorList'
+
 
 const LoginPage = props => {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -40,9 +41,7 @@ const LoginPage = props => {
               <Link to="/signup">Haven't got an account?</Link>
             </p>
 
-            <ul className="error-messages">
-              {displayErrors(errors)}
-            </ul>
+            <ErrorList errors={errors} />
 
             <form>
               <fieldset className="form-group">

@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
     case GET_PROFILE_FAIL:
       return { ...state, isLoading: false, errors: action.errors }
     case CLEAR_PROFILE:
-      return { ...state, profile: {} }
+      return { ...state, profile: {}, errors: {} }
     default:
       return state
   }

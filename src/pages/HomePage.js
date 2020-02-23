@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
 import { FETCH_ARTICLES_START, FETCH_TAGS_START, FETCH_ARTICLES_FEED_START } from '../store/constant'
 import { NavLink } from 'react-router-dom'
 
-const mapStateToProps = state => ({
-  isAritclesLoading: state.articles.isLoading,
-  fetchArticlesError: state.articles.error,
-  tags: state.tags.tags,
-  location: state.router.location
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params }),
-  fetchArticlesFeed: params => dispatch({ type: FETCH_ARTICLES_FEED_START, params }),
-  fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
-})
-
 const HomePage = props => {
-  const { fetchArticles, fetchArticlesFeed, fetchTags, tags, location, match } = props
+  const { match } = props
+  const tags = useSelector(state => state.tags.tags)
+  const location = useSelector(state => state.router.location)
+
+  const dispatch = useDispatch()
+  const fetchArticles = useCallback(params => dispatch({ type: FETCH_ARTICLES_START, params }), [dispatch])
+  const fetchArticlesFeed = useCallback(params => dispatch({ type: FETCH_ARTICLES_FEED_START, params }), [dispatch])
+  const fetchTags = useCallback(() => dispatch({ type: FETCH_TAGS_START }), [dispatch])
 
   useEffect(() => {
     match.path === '/feed' ? fetchArticlesFeed({ ...location.query }) : fetchArticles({ ...location.query, tag: match.params.tag })
@@ -73,4 +67,4 @@ const HomePage = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
+export default HomePage

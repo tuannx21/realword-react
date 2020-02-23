@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { UPDATE_PROFILE_START, CLEAR_PROFILE } from '../store/constant'
-import { displayErrors } from '../helpers/utils'
-
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser,
-  errors: state.auth.errorsUpdateProfile
-})
-
-const mapDispatchToProps = dispatch => ({
-  updateProfile: user => dispatch({ type: UPDATE_PROFILE_START, user }),
-  onUnload: () => dispatch({ type: CLEAR_PROFILE })
-})
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { UPDATE_PROFILE_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
+import ErrorList from '../component/ErrorList'
 
 const SettingPage = props => {
-  const { currentUser, errors, onUnload, updateProfile } = props
+  const currentUser = useSelector(state => state.auth.currentUser)
+  const errors = useSelector(state => state.auth.errorsUpdateProfile)
+
+  const dispatch = useDispatch()
+  const updateProfile = user => dispatch({ type: UPDATE_PROFILE_START, user })
+  const onPageUnload = useCallback(() => dispatch({ type: CLEAR_ALL_AUTH_ERRORS }), [dispatch])
+
   const [user, setUser] = useState(currentUser)
 
   useEffect(() => {
     setUser(currentUser)
-    return onUnload
-  }, [currentUser, onUnload])
+    return onPageUnload
+  }, [currentUser, onPageUnload])
 
   const onInputChange = event => {
     const targetValue = event.target.value
@@ -41,9 +37,7 @@ const SettingPage = props => {
           <div className="col-md-6 offset-md-3 col-xs-12">
             <h1 className="text-xs-center">Your Settings</h1>
 
-            <ul className="error-messages">
-              {displayErrors(errors)}
-            </ul>
+            <ErrorList errors={errors} />
 
             <form>
               <fieldset>
@@ -98,4 +92,4 @@ const SettingPage = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingPage) 
+export default SettingPage

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { displayErrors } from '../helpers/utils'
 import { REGISTER_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
 import { useSelector, useDispatch } from 'react-redux'
+import ErrorList from '../component/ErrorList'
 
 const RegisterPage = props => {
   const errors = useSelector(state => state.auth.errorsRegister)
@@ -48,9 +48,7 @@ const RegisterPage = props => {
               <Link to="/login">Have an account?</Link>
             </p>
 
-            <ul className="error-messages">
-              {displayErrors(errors)}
-            </ul>
+            <ErrorList errors={errors}/>
 
             <form>
               <fieldset className="form-group">

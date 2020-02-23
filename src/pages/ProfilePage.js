@@ -1,25 +1,22 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { GET_PROFILE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, CLEAR_PROFILE, FETCH_ARTICLES_START } from '../store/constant'
 import ArticleList from '../component/ArticleList'
 import { NavLink } from 'react-router-dom'
 
-const mapStateToProps = state => ({
-  currentProfile: state.user.profile,
-  currentUser: state.auth.currentUser,
-  location: state.router.location
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchArticles: params => dispatch({ type: FETCH_ARTICLES_START, params }),
-  getProfile: username => dispatch({ type: GET_PROFILE_START, username }),
-  followProfile: username => dispatch({ type: FOLLOW_PROFILE_START, username }),
-  unfollowProfile: username => dispatch({ type: UNFOLLOW_PROFILE_START, username }),
-  onUnload: () => dispatch({ type: CLEAR_PROFILE })
-})
-
 const ProfilePage = props => {
-  const { getProfile, fetchArticles, onUnload, currentProfile, currentUser, match, location } = props
+  const { match } = props
+
+  const currentProfile = useSelector(state => state.user.profile)
+  const currentUser = useSelector(state => state.auth.currentUser)
+  const location = useSelector(state => state.router.location)
+
+  const dispatch = useDispatch()
+  const fetchArticles = useCallback(params => dispatch({ type: FETCH_ARTICLES_START, params }), [dispatch])
+  const getProfile = useCallback(username => dispatch({ type: GET_PROFILE_START, username }), [dispatch])
+  const followProfile = useCallback(username => dispatch({ type: FOLLOW_PROFILE_START, username }), [dispatch])
+  const unfollowProfile = useCallback( username => dispatch({ type: UNFOLLOW_PROFILE_START, username }), [dispatch])
+  const onPageUnload = useCallback(() => dispatch({ type: CLEAR_PROFILE }), [dispatch])
 
   useEffect(() => {
     getProfile(match.params.username)
@@ -28,14 +25,14 @@ const ProfilePage = props => {
       ? fetchArticles({ ...location.query, favorited: match.params.username })
       : fetchArticles({ ...location.query, author: match.params.username })
 
-    return onUnload
-  }, [match, location, getProfile, fetchArticles, onUnload])
+    return onPageUnload
+  }, [match, location, getProfile, fetchArticles, onPageUnload])
 
   const followUserButton = () => {
     if (currentUser.username === currentProfile.username) return null
     return currentProfile.following
-      ? <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => props.unfollowProfile(currentProfile.username)}><i className="ion-minus-round"></i>&nbsp;Unfollow {currentProfile.username}</button>
-      : <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => props.followProfile(currentProfile.username)}><i className="ion-plus-round"></i>&nbsp;Follow {currentProfile.username}</button>
+      ? <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => unfollowProfile(currentProfile.username)}><i className="ion-minus-round"></i>&nbsp;Unfollow {currentProfile.username}</button>
+      : <button className="btn btn-sm btn-outline-secondary action-btn" onClick={() => followProfile(currentProfile.username)}><i className="ion-plus-round"></i>&nbsp;Follow {currentProfile.username}</button>
   }
 
   return (
@@ -75,4 +72,4 @@ const ProfilePage = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage) 
+export default ProfilePage

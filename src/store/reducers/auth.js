@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
     case LOGOUT_SUCCESS:
       return { ...state, currentUser: {} }
     case CLEAR_ALL_AUTH_ERRORS:
-      return { ...state, errorsLogin: {}, errorsRegister: {} }
+      return { ...state, errorsLogin: {}, errorsRegister: {}, errorsUpdateProfile: {} }
     default:
       return state
   }
