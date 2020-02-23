@@ -2,19 +2,15 @@ import React from 'react'
 import { formatDate } from '../helpers/utils'
 import { Link } from 'react-router-dom'
 import { DELETE_COMMENT_START } from '../store/constant'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser,
-  article: state.article.article
-})
+const CommentItem = props => {
+  const { comment } = props
+  const currentUser = useSelector(state => state.auth.currentUser)
+  const article = useSelector(state => state.article.article)
 
-const mapDispatchToProps = dispatch => ({
-  deleteComment: (slug, id) => dispatch({ type: DELETE_COMMENT_START, slug, id })
-})
-
-function CommentItem(props) {
-  const { comment, article, currentUser, deleteComment } = props
+  const dispatch = useDispatch()
+  const deleteComment = (slug, id) => dispatch({ type: DELETE_COMMENT_START, slug, id })
 
   const canDelete = currentUser.username === comment.author.username 
   ? <span className="mod-options"><i className="ion-trash-a" onClick={() => deleteComment(article.slug, comment.id)}></i></span>
@@ -37,4 +33,4 @@ function CommentItem(props) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentItem)
+export default CommentItem

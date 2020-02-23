@@ -1,13 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-const mapStateToProps = state => ({
-  location: state.router.location
-})
+const Pagination = props => {
+  const { totalItems } = props
+  const location = useSelector(state => state.router.location)
 
-function Pagination(props) {
-  const { location, totalItems } = props
   const ACTIVE_CLASS = 'active'
 
   const buildPageNumbers = totalItem => {
@@ -18,7 +16,7 @@ function Pagination(props) {
     return paginList
   }
 
-  const isPageActive = pageNumber => parseInt(location.query.offset)/10 + 1 === pageNumber ? ACTIVE_CLASS : ''
+  const isPageActive = pageNumber => parseInt(location.query.offset) / 10 + 1 === pageNumber ? ACTIVE_CLASS : ''
 
   return (
     <nav>
@@ -35,4 +33,4 @@ function Pagination(props) {
   )
 }
 
-export default connect(mapStateToProps, () => ({}))(Pagination)
+export default Pagination

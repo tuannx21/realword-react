@@ -1,71 +1,51 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { CREATE_COMMENT_START } from '../store/constant'
 
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser
-})
+const CommentInput = props => {
+  const { article } = props
+  const [comment, setComment] = useState({body: ''})
 
-const mapDispatchToProps = dispatch => ({
-  createComment: (slug, comment) => dispatch({ type: CREATE_COMMENT_START, slug, comment })
-})
+  const currentUser = useSelector(state => state.auth.currentUser)
 
-class CommentInput extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      comment: {
-        body: ''
-      }
-    }
+  const dispatch = useDispatch()
+  const createComment = (slug, comment) => dispatch({ type: CREATE_COMMENT_START, slug, comment })
+
+  const onCommentInputChange = event => {
+    setComment({ body: event.target.value })
   }
 
-  onCommentInputChange = event => {
-    this.setState({
-      comment: {
-        body: event.target.value
-      }
-    })
+  const handleCreateComment = () => {
+    createComment(article.slug, comment)
+    setComment({ body: '' })
   }
 
-  handleCreateComment = () => {
-    const { createComment, article } = this.props
-
-    createComment(article.slug, this.state.comment)
-    this.setState({ comment: { body: '' } })
-  }
-
-  onSubmitComment = event => {
+  const onSubmitComment = event => {
     event.preventDefault()
-    this.handleCreateComment()
+    handleCreateComment()
   }
 
-  onEnterInput = event => {
+  const onEnterInput = event => {
     if (event.keyCode !== 13 || event.shiftKey === true) return null
-    this.handleCreateComment()
+    handleCreateComment()
   }
 
-  render() {
-    const { currentUser } = this.props
-    const { comment } = this.state
-
-    return (
-      <form className="card comment-form">
-        <div className="card-block">
-          <textarea className="form-control"
-            placeholder="Write a comment..."
-            rows="3"
-            value={comment.body}
-            onChange={this.onCommentInputChange}
-            onKeyUp={this.onEnterInput}></textarea>
-        </div>
-        <div className="card-footer">
-          <img src={currentUser.image} className="comment-author-img" alt="img" />
-          <button className="btn btn-sm btn-primary" onClick={this.onSubmitComment}>Post Comment</button>
-        </div>
-      </form>
-    )
-  }
+  return (
+    <form className="card comment-form">
+      <div className="card-block">
+        <textarea className="form-control"
+          placeholder="Write a comment..."
+          rows="3"
+          value={comment.body}
+          onChange={onCommentInputChange}
+          onKeyUp={onEnterInput}></textarea>
+      </div>
+      <div className="card-footer">
+        <img src={currentUser.image} className="comment-author-img" alt="img" />
+        <button className="btn btn-sm btn-primary" onClick={onSubmitComment}>Post Comment</button>
+      </div>
+    </form>
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentInput)
+export default CommentInput
