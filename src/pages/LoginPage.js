@@ -1,101 +1,73 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LOGIN_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
-import { displayErrors } from '../helpers/utils'
+import ErrorList from '../component/ErrorList'
 
-const mapStateToProps = state => ({
-  errors: state.auth.errorsLogin
-})
 
-const mapDispatchToProps = dispatch => ({
-  login: user => dispatch({ type: LOGIN_START, user }),
-  clearErrors: () => dispatch({type: CLEAR_ALL_AUTH_ERRORS})
-})
+const LoginPage = props => {
+  const [user, setUser] = useState({ email: '', password: '' })
+  const errors = useSelector(state => state.auth.errorsLogin)
+  const dispatch = useDispatch()
 
-class LoginPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      user: {
-        email: '',
-        password: ''
-      }
-    }
-  }
+  const login = user => dispatch({ type: LOGIN_START, user })
+  const clearErrors = useCallback(() => dispatch({ type: CLEAR_ALL_AUTH_ERRORS }), [dispatch])
 
-  componentDidMount() {
-    this.props.clearErrors()
-  }
+  useEffect(() => {
+    clearErrors()
+  }, [clearErrors])
 
-  onInputChange = event => {
+  const onInputChange = event => {
     const targetValue = event.target.value
     const targetName = event.target.name
 
-    this.setState({
-      user: {
-        ...this.state.user,
-        [targetName]: targetValue
-      }
-    })
+    setUser({ ...user, [targetName]: targetValue })
   }
 
-  onHandleSubmit = event => {
+  const onHandleSubmit = event => {
     event.preventDefault()
-    this.setState({
-      user: {
-        email: '',
-        password: ''
-      }
-    })
-    this.props.login(this.state.user)
+    login(user)
+    setUser({ email: '', password: '' })
   }
 
-  render() {
-    const { user } = this.state
-    const { errors } = this.props
+  return (
+    <div className="auth-page">
+      <div className="container page">
+        <div className="row">
 
-    return (
-      <div className="auth-page">
-        <div className="container page">
-          <div className="row">
+          <div className="col-md-6 offset-md-3 col-xs-12">
+            <h1 className="text-xs-center">Login</h1>
+            <p className="text-xs-center">
+              <Link to="/signup">Haven't got an account?</Link>
+            </p>
 
-            <div className="col-md-6 offset-md-3 col-xs-12">
-              <h1 className="text-xs-center">Login</h1>
-              <p className="text-xs-center">
-                <Link to="/signup">Haven't got an account?</Link>
-              </p>
+            <ErrorList errors={errors} />
 
-              <ul className="error-messages">
-                {displayErrors(errors)}
-              </ul>
-
-              <form>
-                <fieldset className="form-group">
-                  <input className="form-control form-control-lg"
-                    type="text"
-                    name="email"
-                    value={user.email}
-                    placeholder="Email"
-                    onChange={this.onInputChange} />
-                </fieldset>
-                <fieldset className="form-group">
-                  <input className="form-control form-control-lg"
-                    type="password"
-                    name="password"
-                    value={user.password}
-                    placeholder="Password"
-                    onChange={this.onInputChange} />
-                </fieldset>
-                <button className="btn btn-lg btn-primary pull-xs-right" type="submit" onClick={this.onHandleSubmit}>Log In</button>
-              </form>
-            </div>
-
+            <form>
+              <fieldset className="form-group">
+                <input className="form-control form-control-lg"
+                  type="text"
+                  name="email"
+                  value={user.email}
+                  placeholder="Email"
+                  onChange={onInputChange} />
+              </fieldset>
+              <fieldset className="form-group">
+                <input className="form-control form-control-lg"
+                  type="password"
+                  name="password"
+                  value={user.password}
+                  placeholder="Password"
+                  onChange={onInputChange} />
+              </fieldset>
+              <button className="btn btn-lg btn-primary pull-xs-right" type="submit" onClick={onHandleSubmit}>Log In</button>
+            </form>
           </div>
+
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+export default LoginPage

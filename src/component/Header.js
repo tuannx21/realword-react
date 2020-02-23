@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { LOGOUT_START } from '../store/constant'
 
 const LogInView = props => {
@@ -43,26 +43,20 @@ const LogOutView = props => {
   )
 }
 
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser
-})
+const Header = props => {
+  const currentUser = useSelector(state => state.auth.currentUser)
+  const dispatch = useDispatch()
+  const logOut = () => dispatch({ type: LOGOUT_START })
 
-const mapDispatchToProps = dispatch => ({
-  logOut: () => dispatch({ type: LOGOUT_START })
-})
-
-class Header extends React.Component {
-  render() {
-    return (
-      <nav className="navbar navbar-light">
-        <div className="container">
-          <NavLink to="/" className="navbar-brand">conduit</NavLink>
-          <LogInView currentUser={this.props.currentUser} onClickLogOut={this.props.logOut} />
-          <LogOutView currentUser={this.props.currentUser} />
-        </div>
-      </nav>
-    )
-  }
+  return (
+    <nav className="navbar navbar-light">
+      <div className="container">
+        <NavLink to="/" className="navbar-brand">conduit</NavLink>
+        <LogInView currentUser={currentUser} onClickLogOut={logOut} />
+        <LogOutView currentUser={currentUser} />
+      </div>
+    </nav>
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default Header

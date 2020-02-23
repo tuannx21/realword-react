@@ -2,16 +2,15 @@ import React from 'react'
 import TagList from './TagList'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers/utils'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START } from '../store/constant'
 
-const mapDispatchToProps = dispatch => ({
-  favoriteArticle: slug => dispatch({ type: FAVORITE_ARTICLE_START, slug }),
-  unFavoriteArticle: slug => dispatch({ type: UNFAVORITE_ARTICLE_START, slug })
-})
+const ArticlePreview = props => {
+  const { article } = props
 
-function ArticlePreview(props) {
-  const { article, favoriteArticle, unFavoriteArticle } = props
+  const dispatch = useDispatch()
+  const favoriteArticle = slug => dispatch({ type: FAVORITE_ARTICLE_START, slug })
+  const unFavoriteArticle = slug => dispatch({ type: UNFAVORITE_ARTICLE_START, slug })
 
   const favoriteButton = article.favorited
     ? <button className="btn btn-primary btn-sm pull-xs-right" onClick={() => unFavoriteArticle(article.slug)}><i className="ion-heart"></i> {article.favoritesCount}</button>
@@ -32,9 +31,9 @@ function ArticlePreview(props) {
         <p>{article.description}</p>
         <span>Read more...</span>
       </Link>
-      <TagList tags={article.tagList} style={{float: 'right'}} isOutline></TagList>
+      <TagList tags={article.tagList} style={{ float: 'right' }} isOutline />
     </div >
   )
 }
 
-export default connect(null, mapDispatchToProps)(ArticlePreview)
+export default ArticlePreview

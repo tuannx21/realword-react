@@ -1,4 +1,4 @@
-import { FETCH_COMMENTS_START, FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAIL, CREATE_ARTICLE_START, CREATE_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS } from "../constant"
+import { FETCH_COMMENTS_START, FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAIL, CREATE_ARTICLE_START, CREATE_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS, CLEAR_COMMENTS } from "../constant"
 
 const initialState = {
   isLoading: false,
@@ -18,12 +18,14 @@ export default (state = initialState, action) => {
     case CREATE_COMMENT_SUCCESS:
       return {
         ...state, comments: [
-          ...state.comments,
-          action.data.comment
+          action.data.comment,
+          ...state.comments
         ]
       }
     case DELETE_COMMENT_SUCCESS:
       return { ...state, comments: state.comments.filter(comment => comment.id !== action.id) }
+    case CLEAR_COMMENTS: 
+      return { ...state, comments: []}
     case CREATE_ARTICLE_START:
     default:
       return state

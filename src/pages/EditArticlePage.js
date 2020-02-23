@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { CREATE_ARTICLE_START, FETCH_ARTICLE_START, CLEAR_ARTICLE, UPDATE_ARTICLE_START } from '../store/constant'
 import { connect } from 'react-redux'
-import { displayErrors } from '../helpers/utils'
+import ErrorList from '../component/ErrorList'
 
 const mapStateToProps = state => ({
   currentUser: state.auth.currentUser,
@@ -134,9 +134,7 @@ class EditArticlePage extends Component {
           <div className="row">
             <div className="col-md-10 offset-md-1 col-xs-12">
 
-              <ul className="error-messages">
-                {displayErrors(errors)}
-              </ul>
+              <ErrorList errors={errors} />
 
               <form>
                 <fieldset>

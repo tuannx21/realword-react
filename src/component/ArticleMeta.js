@@ -2,19 +2,7 @@ import React from 'react'
 import { formatDate } from '../helpers/utils'
 import { Link } from 'react-router-dom'
 import { FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, FAVORITE_ARTICLE_START, UNFAVORITE_ARTICLE_START, DELETE_ARTICLE_START } from '../store/constant'
-import { connect } from 'react-redux'
-
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser
-})
-
-const mapDispatchToProps = dispatch => ({
-  followProfile: username => dispatch({ type: FOLLOW_PROFILE_START, username }),
-  unfollowProfile: username => dispatch({ type: UNFOLLOW_PROFILE_START, username }),
-  favoriteArticle: slug => dispatch({ type: FAVORITE_ARTICLE_START, slug }),
-  unfavoriteArticle: slug => dispatch({ type: UNFAVORITE_ARTICLE_START, slug }),
-  deleteArticle: slug => dispatch({ type: DELETE_ARTICLE_START, slug })
-})
+import { useSelector, useDispatch } from 'react-redux'
 
 const OwnerView = props => {
   const { article, deleteArticle } = props
@@ -52,8 +40,16 @@ const DefaultView = props => {
   )
 }
 
-function ArticleMeta(props) {
-  const { article, author, currentUser, followProfile, unfollowProfile, favoriteArticle, unfavoriteArticle, deleteArticle } = props
+const ArticleMeta = props => {
+  const { article, author } = props
+  const currentUser = useSelector(state => state.auth.currentUser)
+
+  const dispatch = useDispatch()
+  const followProfile = username => dispatch({ type: FOLLOW_PROFILE_START, username })
+  const unfollowProfile = username => dispatch({ type: UNFOLLOW_PROFILE_START, username })
+  const favoriteArticle = slug => dispatch({ type: FAVORITE_ARTICLE_START, slug })
+  const unfavoriteArticle = slug => dispatch({ type: UNFAVORITE_ARTICLE_START, slug })
+  const deleteArticle = slug => dispatch({ type: DELETE_ARTICLE_START, slug })
 
   return (
     <div className="article-meta">
@@ -74,4 +70,4 @@ function ArticleMeta(props) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleMeta)
+export default ArticleMeta

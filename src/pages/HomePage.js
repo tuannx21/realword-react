@@ -1,66 +1,70 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
-import { FETCH_ARTICLES_START, FETCH_TAGS_START } from '../store/constant'
+import { FETCH_ARTICLES_START, FETCH_TAGS_START, FETCH_ARTICLES_FEED_START } from '../store/constant'
+import { NavLink } from 'react-router-dom'
 
-const mapStateToProps = state => ({
-  isAritclesLoading: state.articles.isLoading,
-  fetchArticlesError: state.articles.error,
-  articles: state.articles.articles,
-  tags: state.tags.tags
-})
+const HomePage = props => {
+  const { match } = props
+  const tags = useSelector(state => state.tags.tags)
+  const location = useSelector(state => state.router.location)
 
-const mapDispatchToProps = dispatch => ({
-  fetchArticles: () => dispatch({ type: FETCH_ARTICLES_START }),
-  fetchTags: () => dispatch({ type: FETCH_TAGS_START }),
-})
+  const dispatch = useDispatch()
+  const fetchArticles = useCallback(params => dispatch({ type: FETCH_ARTICLES_START, params }), [dispatch])
+  const fetchArticlesFeed = useCallback(params => dispatch({ type: FETCH_ARTICLES_FEED_START, params }), [dispatch])
+  const fetchTags = useCallback(() => dispatch({ type: FETCH_TAGS_START }), [dispatch])
 
-class HomePage extends Component {
-  componentDidMount() {
-    this.props.fetchArticles()
-    this.props.fetchTags()
-  }
+  useEffect(() => {
+    match.path === '/feed' ? fetchArticlesFeed({ ...location.query }) : fetchArticles({ ...location.query, tag: match.params.tag })
+    fetchTags()
+  }, [fetchArticles, fetchArticlesFeed, fetchTags, location.query, match])
 
-  render() {
-    return (
-      <div className="home-page">
 
-        <Banner title="conduit">
-          <p>A place to share your knowledge.</p>
-        </Banner>
+  const tabCurrentTag = match.params.tag
+    ? <li className="nav-item">
+      <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
+    </li>
+    : null
 
-        <div className="container page">
-          <div className="row">
+  return (
+    <div className="home-page">
 
-            <div className="col-md-9">
-              <div className="feed-toggle">
-                <ul className="nav nav-pills outline-active">
-                  <li className="nav-item">
-                    <a className="nav-link disabled" href="/">Your Feed</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link active" href="/">Global Feed</a>
-                  </li>
-                </ul>
-              </div>
-              <ArticleList isError={this.props.fetchArticlesError} isLoading={this.props.isAritclesLoading} articles={this.props.articles} />
+      <Banner title="conduit">
+        <p>A place to share your knowledge.</p>
+      </Banner>
+
+      <div className="container page">
+        <div className="row">
+
+          <div className="col-md-9">
+            <div className="feed-toggle">
+              <ul className="nav nav-pills outline-active">
+                <li className="nav-item">
+                  <NavLink to="/feed" className="nav-link" onClick={() => fetchArticlesFeed()}>Your Feed</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink exact to="/" className="nav-link" onClick={() => fetchArticles()}>Global Feed</NavLink>
+                </li>
+                {tabCurrentTag}
+              </ul>
             </div>
-
-            <div className="col-md-3">
-              <div className="sidebar">
-                <p>Popular Tags</p>
-                <TagList tags={this.props.tags} />
-              </div>
-            </div>
-
+            <ArticleList />
           </div>
-        </div>
 
+          <div className="col-md-3">
+            <div className="sidebar">
+              <p>Popular Tags</p>
+              <TagList tags={tags} />
+            </div>
+          </div>
+
+        </div>
       </div>
-    )
-  }
+
+    </div>
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
+export default HomePage

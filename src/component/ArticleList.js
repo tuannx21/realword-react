@@ -1,9 +1,15 @@
 import React from 'react'
 import ArticlePreview from './ArticlePreview'
+import Pagination from './Pagination'
+import { useSelector } from 'react-redux'
 
-function ArticleList(props) {
-  const { isError, isLoading, articles } = props
+const ArticleList = props => {
+  const articles = useSelector(state => state.articles.articles)
+  const articlesCount = useSelector(state => state.article.articlesCount)
+  const isError = useSelector(state => state.articles.error)
+  const isLoading = useSelector(state => state.articles.isLoading)
 
+  if (!articles.length) return (<p>No article ...</p>)
   if (isLoading) return (<p>Loading ...</p>)
   if (isError) return (<p>Something went wrong !!!</p>)
   return (
@@ -11,8 +17,9 @@ function ArticleList(props) {
       {articles.map(article => (
         <ArticlePreview key={article.slug} article={article} />
       ))}
-    </div>
 
+      <Pagination totalItems={articlesCount} />
+    </div>
   )
 }
 
