@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
   article: {},
   error: {},
-  createErrors: {}
+  errorCreate: {}
 }
 
 export default (state = initialState, action) => {
@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
       return { ...state, isLoading: false, error: action.error }
     case CREATE_ARTICLE_FAIL:
     case UPDATE_ARTICLE_FAIL:
-      return { ...state, createErrors: action.error }
+      return { ...state, errorCreate: action.error }
     case CLEAR_ARTICLE:
       return { ...state, article: {} }
     case FAVORITE_ARTICLE_START:

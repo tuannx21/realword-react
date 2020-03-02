@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 const ArticleList = props => {
   const articles = useSelector(state => state.articles.articles)
-  const articlesCount = useSelector(state => state.article.articlesCount)
+  const articlesCount = useSelector(state => state.articles.articlesCount)
   const isError = useSelector(state => state.articles.error)
   const isLoading = useSelector(state => state.articles.isLoading)
 
