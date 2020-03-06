@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const Pagination = props => {
   const { totalItems } = props
   const location = useSelector(state => state.router.location)
-
+  console.log(totalItems)
   const ACTIVE_CLASS = 'active'
 
   const buildPageNumbers = totalItem => {

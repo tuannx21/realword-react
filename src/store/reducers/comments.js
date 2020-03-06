@@ -3,8 +3,7 @@ import { FETCH_COMMENTS_START, FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAIL, CREA
 const initialState = {
   isLoading: false,
   comments: [],
-  error: {},
-  createErrors: {}
+  error: {}
 }
 
 export default (state = initialState, action) => {

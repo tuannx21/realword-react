@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { LOGIN_START, CLEAR_ALL_AUTH_ERRORS } from '../store/constant'
 import ErrorList from '../component/ErrorList'
 
-
 const LoginPage = props => {
   const [user, setUser] = useState({ email: '', password: '' })
   const errors = useSelector(state => state.auth.errorsLogin)
