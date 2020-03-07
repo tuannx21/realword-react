@@ -10,6 +10,7 @@ const EditArticlePage = props => {
   const [article, setArticle] = useState({ title: '', description: '', body: '', tagList: [] })
 
   const currentUser = useSelector(state => state.auth.currentUser)
+  const currentArticle = useSelector(state => state.article.article)
   const errors = useSelector(state => state.article.errorCreate)
 
   const dispatch = useDispatch()
@@ -25,9 +26,9 @@ const EditArticlePage = props => {
   }, [fetchArticle, onPageUnload, match.params.articleSlug])
 
   useEffect(() => {
-    if (props.article.slug
-      && currentUser.username === props.article.author.username) {
-      const { title, description, body, tagList } = props.article
+    if (currentArticle.slug
+      && currentUser.username === currentArticle.author.username) {
+      const { title, description, body, tagList } = currentArticle
       setArticle({
         title,
         description,
@@ -41,7 +42,7 @@ const EditArticlePage = props => {
       body: '',
       tagList: []
     })
-  }, [props.article, currentUser.username])
+  }, [currentArticle, currentUser.username])
 
   const onInputChange = event => {
     const targetValue = event.target.value
