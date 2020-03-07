@@ -1,20 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { CREATE_ARTICLE_START, FETCH_ARTICLE_START, CLEAR_ARTICLE, UPDATE_ARTICLE_START } from '../store/constant'
-import { connect, useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import ErrorList from '../component/ErrorList'
-
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser,
-  article: state.article.article,
-  errors: state.article.errorCreate
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchArticle: slug => dispatch({ type: FETCH_ARTICLE_START, slug }),
-  createArticle: article => dispatch({ type: CREATE_ARTICLE_START, article }),
-  updateArticle: (articleSlug, article) => dispatch({ type: UPDATE_ARTICLE_START, articleSlug, article }),
-  onUnload: () => dispatch({ type: CLEAR_ARTICLE })
-})
 
 const EditArticlePage = props => {
   const { match } = props
@@ -168,4 +155,4 @@ const EditArticlePage = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditArticlePage)
+export default EditArticlePage
