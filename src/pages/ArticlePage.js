@@ -6,9 +6,10 @@ import CommentInput from '../component/CommentInput'
 import CommentList from '../component/CommentList'
 import TagList from '../component/TagList'
 import { FETCH_ARTICLE_START, ARTICLE_PAGE_UNLOAD, FETCH_COMMENTS_START } from '../store/constant'
+import { useParams } from 'react-router'
 
 const ArticlePage = props => {
-  const { match } = props
+  const { articleSlug } = useParams()
   const author = useSelector(state => state.user.profile)
   const article = useSelector(state => state.article.article)
   const comments = useSelector(state => state.comments.comments)
@@ -19,10 +20,10 @@ const ArticlePage = props => {
   const onPageUnload = useCallback(() => dispatch({ type: ARTICLE_PAGE_UNLOAD }), [dispatch])
 
   useEffect(() => {
-    fetchArticle(match.params.articleSlug)
-    fetchArticleComments(match.params.articleSlug)
+    fetchArticle(articleSlug)
+    fetchArticleComments(articleSlug)
     return onPageUnload
-  }, [fetchArticle, fetchArticleComments, onPageUnload, match])
+  }, [fetchArticle, fetchArticleComments, onPageUnload, articleSlug])
 
   return (
     <div className="article-page">

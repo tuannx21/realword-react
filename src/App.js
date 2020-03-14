@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { history } from './store'
+import { FETCH_CURRENT_USER } from './store/constant'
 
-import Header from './component/Header'
-import Footer from './component/Footer'
+const Header = React.lazy(() => import('./component/Header'))
+const Footer = React.lazy(() => import('./component/Footer'))
 
-import ArticlePage from './pages/ArticlePage'
-import HomePage from './pages/HomePage'
-import EditArticlePage from './pages/EditArticlePage'
-import SettingPage from './pages/SettingPage'
-import LoginPage from './pages/LoginPage'
-import ProfilePage from './pages/ProfilePage'
-import RegisterPage from './pages/RegisterPage'
-import { FETCH_CURRENT_USER } from './store/constant';
+const ArticlePage = React.lazy(() => import('./pages/ArticlePage'))
+const HomePage = React.lazy(() => import('./pages/HomePage'))
+const EditArticlePage = React.lazy(() => import('./pages/EditArticlePage'))
+const SettingPage = React.lazy(() => import('./pages/SettingPage'))
+const LoginPage = React.lazy(() => import('./pages/LoginPage'))
+const ProfilePage = React.lazy(() => import('./pages/ProfilePage'))
+const RegisterPage = React.lazy(() => import('./pages/RegisterPage'))
 
 const mapStateToProps = state => ({
   currentUser: state.auth.currentUser
@@ -34,21 +34,41 @@ class App extends Component {
     return (
       <div className="App">
         <ConnectedRouter history={history}>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/feed" component={HomePage} />
-            <Route path="/explore/tags/:tag" component={HomePage} />
-            <Route path="/login" render={() => !this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
-            <Route path="/editor/:articleSlug?" component={EditArticlePage} />
-            <Route path="/setting" component={SettingPage} />
-            <Route path="/signup" component={RegisterPage} />
-            <Route path="/article/:articleSlug" component={ArticlePage} />
-            <Route exact path="/user/@:username" component={ProfilePage} />
-            <Route path="/user/@:username/favorited" component={ProfilePage} />
-            <Route component={HomePage} />
-          </Switch>
-          <Footer />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Header />
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route path="/feed">
+                <HomePage />
+              </Route>
+              <Route path="/explore/tags/:tag">
+                <HomePage />
+              </Route>
+              <Route path="/login" render={() => !this.props.currentUser.username ? <LoginPage /> : <Redirect to="/" />} />
+              <Route path="/editor/:articleSlug?">
+                <EditArticlePage />
+              </Route>
+              <Route path="/setting">
+                <SettingPage />
+              </Route>
+              <Route path="/signup">
+                <RegisterPage />
+              </Route>
+              <Route path="/article/:articleSlug" >
+                <ArticlePage />
+              </Route>
+              <Route exact path="/user/@:username" >
+                <ProfilePage />
+              </Route>
+              <Route path="/user/@:username/favorited" >
+                <ProfilePage />
+              </Route>
+              <Route component={HomePage} />
+            </Switch>
+            <Footer />
+          </Suspense>
         </ConnectedRouter>
       </div>
     )

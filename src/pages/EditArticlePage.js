@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { CREATE_ARTICLE_START, FETCH_ARTICLE_START, CLEAR_ARTICLE, UPDATE_ARTICLE_START } from '../store/constant'
 import { useSelector, useDispatch } from 'react-redux'
 import ErrorList from '../component/ErrorList'
+import { useParams } from 'react-router'
 
 const EditArticlePage = props => {
-  const { match } = props
-
+  const { articleSlug } = useParams()
   const [tagInput, setTagInput] = useState('')
   const [article, setArticle] = useState({ title: '', description: '', body: '', tagList: [] })
 
@@ -20,10 +20,10 @@ const EditArticlePage = props => {
   const onPageUnload = useCallback(() => dispatch({ type: CLEAR_ARTICLE }), [dispatch])
 
   useEffect(() => {
-    if (match.params.articleSlug) fetchArticle(match.params.articleSlug)
+    if (articleSlug) fetchArticle(articleSlug)
 
     return onPageUnload
-  }, [fetchArticle, onPageUnload, match.params.articleSlug])
+  }, [fetchArticle, onPageUnload, articleSlug])
 
   useEffect(() => {
     if (currentArticle.slug
@@ -89,7 +89,7 @@ const EditArticlePage = props => {
       body: '',
       tagList: []
     })
-    if (match.params.articleSlug) updateArticle(match.params.articleSlug, article)
+    if (articleSlug) updateArticle(articleSlug, article)
     else createArticle(article)
   }
 

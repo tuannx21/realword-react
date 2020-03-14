@@ -4,10 +4,12 @@ import Banner from '../component/Banner'
 import ArticleList from '../component/ArticleList'
 import TagList from '../component/TagList'
 import { FETCH_ARTICLES_START, FETCH_TAGS_START, FETCH_ARTICLES_FEED_START } from '../store/constant'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams, useRouteMatch } from 'react-router-dom'
 
 const HomePage = props => {
-  const { match } = props
+  const { tag } = useParams()
+  const { path } = useRouteMatch()
+
   const tags = useSelector(state => state.tags.tags)
   const location = useSelector(state => state.router.location)
 
@@ -17,14 +19,14 @@ const HomePage = props => {
   const fetchTags = useCallback(() => dispatch({ type: FETCH_TAGS_START }), [dispatch])
 
   useEffect(() => {
-    match.path === '/feed' ? fetchArticlesFeed({ ...location.query }) : fetchArticles({ ...location.query, tag: match.params.tag })
+    path === '/feed' ? fetchArticlesFeed({ ...location.query }) : fetchArticles({ ...location.query, tag })
     fetchTags()
-  }, [fetchArticles, fetchArticlesFeed, fetchTags, location.query, match])
+  }, [fetchArticles, fetchArticlesFeed, fetchTags, location.query, path, tag])
 
 
-  const tabCurrentTag = match.params.tag
+  const tabCurrentTag = tag
     ? <li className="nav-item">
-      <a href={`/explore/tags/${match.params.tag}`} className="nav-link active">{`#${match.params.tag}`}</a>
+      <a href={`/explore/tags/${tag}`} className="nav-link active">{`#${tag}`}</a>
     </li>
     : null
 

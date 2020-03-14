@@ -2,10 +2,11 @@ import React, { useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { GET_PROFILE_START, FOLLOW_PROFILE_START, UNFOLLOW_PROFILE_START, CLEAR_PROFILE, FETCH_ARTICLES_START } from '../store/constant'
 import ArticleList from '../component/ArticleList'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useRouteMatch, useParams } from 'react-router-dom'
 
 const ProfilePage = props => {
-  const { match } = props
+  const { path } = useRouteMatch()
+  const { username } = useParams()
 
   const currentProfile = useSelector(state => state.user.profile)
   const currentUser = useSelector(state => state.auth.currentUser)
@@ -19,14 +20,14 @@ const ProfilePage = props => {
   const onPageUnload = useCallback(() => dispatch({ type: CLEAR_PROFILE }), [dispatch])
 
   useEffect(() => {
-    getProfile(match.params.username)
+    getProfile(username)
 
-    match.path.includes('favorited')
-      ? fetchArticles({ ...location.query, favorited: match.params.username })
-      : fetchArticles({ ...location.query, author: match.params.username })
+    path.includes('favorited')
+      ? fetchArticles({ ...location.query, favorited: username })
+      : fetchArticles({ ...location.query, author: username })
 
     return onPageUnload
-  }, [match, location, getProfile, fetchArticles, onPageUnload])
+  }, [path, location, getProfile, fetchArticles, onPageUnload, username])
 
   const followUserButton = () => {
     if (currentUser.username === currentProfile.username) return null

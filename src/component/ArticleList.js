@@ -9,7 +9,7 @@ const ArticleList = props => {
   const isError = useSelector(state => state.articles.error)
   const isLoading = useSelector(state => state.articles.isLoading)
 
-  if (!articles.length) return (<p>No article ...</p>)
+  if (!articles.length && !isLoading) return (<p>No article ...</p>)
   if (isLoading) return (<p>Loading ...</p>)
   if (isError) return (<p>Something went wrong !!!</p>)
   return (
